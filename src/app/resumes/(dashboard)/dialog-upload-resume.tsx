@@ -44,7 +44,7 @@ export function DialogUploadResume() {
                     <ArrowUpCircle className="h-4 w-4 mr-2" /> Upload
                 </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[700px]">
+            <DialogContent className="sm:max-w-[600px]">
                 <DialogHeader>
                     <DialogTitle>Upload resume</DialogTitle>
                 </DialogHeader>

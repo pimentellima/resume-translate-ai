@@ -32,7 +32,7 @@ export default async function uploadDocument(
             userId: session.user.id,
             key,
             name: file.name,
-            size: file.size.toString(),
+            fileSize: file.size,
         })
         revalidatePath('/resumes')
     } catch (error) {

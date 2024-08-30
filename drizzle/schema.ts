@@ -1,5 +1,5 @@
 import { relations, sql } from 'drizzle-orm'
-import { pgTable, text, timestamp } from 'drizzle-orm/pg-core'
+import { integer, pgTable, text, timestamp } from 'drizzle-orm/pg-core'
 
 export const users = pgTable('users', {
     id: text('id')
@@ -23,7 +23,7 @@ export const resumes = pgTable('resumes', {
         .notNull(),
     name: text('name'),
     key: text('key'),
-    size: text('size'),
+    fileSize: integer('fileSize').notNull(),
     createdAt: timestamp('createdAt').defaultNow(),
 })
 
