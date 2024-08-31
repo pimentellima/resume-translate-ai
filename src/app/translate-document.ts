@@ -57,7 +57,7 @@ export default async function translateDocument(
         const [beforeBody, body, afterBody] = splitHtmlDocument(htmlString)
 
         const { text, usage: tokenUsage } = await generateText({
-            model: openai('gpt-3.5-turbo'),
+            model: openai('gpt-4o-mini'),
             prompt:
                 `Translate all text contents of this html to ${language}. \n\n` +
                 `${body}`,

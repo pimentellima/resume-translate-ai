@@ -2,7 +2,7 @@ import { redirect } from 'next/navigation'
 import { auth } from '../../lib/auth'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
-import DropdownMenuAccount from './dropdown-menu-account'
+import DropdownMenuAccount from './resumes/dropdown-menu-account'
 
 export default async function Layout({
     children,
