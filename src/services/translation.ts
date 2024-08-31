@@ -1,10 +1,26 @@
 import { db } from '@/drizzle/index'
 import { translations } from '@/drizzle/schema'
-import { eq } from 'drizzle-orm'
+import { count, eq } from 'drizzle-orm'
 
 export async function getTranslationById(translationId: string) {
-    const resume = await db.query.translations.findFirst({
+    const translation = await db.query.translations.findFirst({
         where: eq(translations.id, translationId),
     })
-    return resume
+    return translation
+}
+
+export async function getTranslationsByUserId(userId: string, page = 1) {
+    const userTranslations = await db.query.translations.findMany({
+        where: eq(translations.userId, userId),
+
+        limit: 10,
+        offset: 10 * (page - 1),
+    })
+    const countRows = await db
+        .select({
+            count: count(),
+        })
+        .from(translations)
+
+    return { userTranslations, count: countRows[0].count }
 }

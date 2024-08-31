@@ -9,10 +9,7 @@ export const getUserById = cache(async (userId: string) => {
         where: eq(users.id, userId),
         columns: {
             password: false,
-        },
-        with: {
-            translations: true,
-        },
+        }
     })
     if (!user) throw new Error('')
     return user
