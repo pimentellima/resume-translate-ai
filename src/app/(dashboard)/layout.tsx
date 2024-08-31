@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation'
-import { auth } from '../../../lib/auth'
+import { auth } from '../../lib/auth'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import DropdownMenuAccount from './dropdown-menu-account'
@@ -17,7 +17,9 @@ export default async function Layout({
     return (
         <div className="min-h-screen flex flex-col">
             <Header />
-            {children}
+            <div className="flex-1 bg-background text-foreground">
+                {children}
+            </div>
         </div>
     )
 }

@@ -1,7 +1,6 @@
-import { Button } from '@/components/ui/button'
 import { auth } from '@/lib/auth'
 import { getUserById } from '@/services/user'
-import { ArrowUpCircle, File, Trash2 } from 'lucide-react'
+import { File } from 'lucide-react'
 import { redirect } from 'next/navigation'
 import { DialogUploadResume } from './dialog-upload-resume'
 import Resume from './resume'
@@ -14,7 +13,7 @@ export default async function ResumesPage() {
     const user = await getUserById(session.user.id)
 
     return (
-        <div className="flex-1 bg-background text-foreground py-10 px-64 flex flex-col ">
+        <div className="py-10 px-64 ">
             <h1 className="font-serif text-3xl">Resumes</h1>
             {user.resumes.length === 0 ? (
                 <div className="flex justify-center items-center flex-col absolute top-1/2 -translate-y-[50%] translate-x-[50%] right-1/2">
@@ -30,7 +29,7 @@ export default async function ResumesPage() {
                     <div className="flex justify-end">
                         <DialogUploadResume />
                     </div>
-                    <div className="mt-3">
+                    <div className="mt-3 flex flex-col gap-2">
                         {user.resumes.map((r) => (
                             <Resume resume={r} key={r.id} />
                         ))}

@@ -1,9 +1,9 @@
 'use client'
+import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import ButtonSubmit from '../components/button-submit'
-import translateDocument from './translate-document'
+import { LoaderCircle } from 'lucide-react'
 import { ChangeEvent, useState } from 'react'
-import { splitHtmlDocument } from '../lib/split-html-document'
+import { useFormStatus } from 'react-dom'
 
 export default function FormTranslateDocument({
     htmlContent,
@@ -38,7 +38,7 @@ export default function FormTranslateDocument({
     return (
         <form
             onSubmit={async (e) => {
-             /*    e.preventDefault()
+                /*    e.preventDefault()
                 const [beforeBody, body, afterBody] = splitHtmlDocument(
                     htmlContent as string
                 )
@@ -60,8 +60,25 @@ export default function FormTranslateDocument({
                 type="file"
                 name="file"
             />
-            <ButtonSubmit disabled={!htmlContent} variant={'outline'} />
+            <ButtonSubmit disabled={!htmlContent} />
             {error && <div className="text-destructive">{error}</div>}
         </form>
+    )
+}
+
+function ButtonSubmit({ disabled }: { disabled?: boolean }) {
+    const { pending } = useFormStatus()
+
+    return (
+        <Button disabled={pending || disabled} variant={'outline'}>
+            {pending ? (
+                <div className="flex items-center">
+                    <LoaderCircle className="animate-spin h-4 w-4 mr-2 duration-1000" />
+                    Submitting...
+                </div>
+            ) : (
+                <span>{'Submit'}</span>
+            )}
+        </Button>
     )
 }
