@@ -16,16 +16,17 @@ export default function TranslationItem({
         (l) => l.value === translation.language
     )?.label
     return (
-        <div className="rounded-md p-3 bg-card grid grid-cols-[1fr,3fr]">
-            <div className="flex items-center">
-                <File className="h-4 w-4 mr-2" />
-                <Button className="px-0 text-base" variant="link" asChild>
-                    <Link href={'/translations/' + translation.id}>
-                        {translation.name}
-                    </Link>
-                </Button>
+        <div className="rounded-md p-3 bg-card grid grid-cols-[1fr,3fr] gap-3">
+            <div className="grid grid-cols-[20px,1fr] gap-2 items-center">
+                <File className="inline w-6 h-6" />
+                <Link
+                    className="overflow-hidden text-base text-ellipsis whitespace-nowrap hover:underline underline-offset-4"
+                    href={'/translations/' + translation.id}
+                >
+                    {translation.name}
+                </Link>
             </div>
-            <div className="grid grid-cols-[5fr,5fr,5fr,1fr] justify-items-start items-center">
+            <div className="grid grid-cols-[5fr,5fr,5fr,1fr] items-center justify-items-end">
                 <span>{(translation.fileSize * 0.001).toFixed(2)} KB</span>
                 <span className="text-nowrap">{language}</span>
                 <span className="text-nowrap">
