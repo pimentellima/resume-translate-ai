@@ -1,5 +1,5 @@
 'use client'
-import translateDocument from '@/app/translate-document'
+import translateDocument from '@/app/(dashboard)/translations/translate-document'
 import { Button } from '@/components/ui/button'
 import {
     Select,

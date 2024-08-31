@@ -11,11 +11,7 @@ export const getUserById = cache(async (userId: string) => {
             password: false,
         },
         with: {
-            resumes: {
-                with: {
-                    translations: true,
-                },
-            },
+            translations: true,
         },
     })
     if (!user) throw new Error('')

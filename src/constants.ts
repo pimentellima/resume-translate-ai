@@ -21,4 +21,4 @@ export const languages = [
     'svSE',
     'fiFI',
     'noNO',
-]
+] as [string, ...string[]]

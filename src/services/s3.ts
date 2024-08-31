@@ -5,5 +5,8 @@ export async function getS3FileByKey(key: string) {
         Key: key,
         Bucket: process.env.S3_BUCKET_NAME,
     })
-    return file.Body?.transformToString()
+
+    const htmlString = await file.Body?.transformToString()
+
+    return htmlString
 }

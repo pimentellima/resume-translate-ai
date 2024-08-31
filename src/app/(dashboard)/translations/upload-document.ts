@@ -34,7 +34,7 @@ export default async function uploadDocument(
             name: file.name,
             fileSize: file.size,
         })
-        revalidatePath('/resumes')
+        revalidatePath('/translations')
     } catch (error) {
         console.log(error)
         return 'Internal error'
