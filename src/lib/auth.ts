@@ -26,7 +26,6 @@ export const authOptions = {
     callbacks: {
         async signIn({ user, account }) {
             if (!user.email) return true
-            
             if (account?.provider === 'google') {
                 const existingUser = await db.query.users.findFirst({
                     where: eq(users.googleId, user.id),
@@ -37,10 +36,13 @@ export const authOptions = {
                         .values({ googleId: user.id })
                         .returning()
                     user.id = newUser.id
+                    return true
+                } else {
+                    user.id = existingUser.id
+                    return true
                 }
             }
-
-            return true
+            return false
         },
         async jwt({ token, user, account }) {
             if (user) {

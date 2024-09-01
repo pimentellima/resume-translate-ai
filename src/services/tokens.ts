@@ -34,6 +34,7 @@ export async function obtainAccessToken(userId: string) {
 export async function refreshAccessToken(
     token: JWT & { refreshToken: { token: string } }
 ) {
+    console.log(token.refreshToken)
     const tokenInDb = await db.query.refreshTokens.findFirst({
         where: eq(refreshTokens.token, token.refreshToken.token),
     })
