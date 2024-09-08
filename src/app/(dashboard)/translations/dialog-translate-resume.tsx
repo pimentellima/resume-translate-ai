@@ -1,4 +1,5 @@
 'use client'
+import SelectLanguage from '@/components/select-language'
 import { Button } from '@/components/ui/button'
 import {
     Dialog,
@@ -9,25 +10,42 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Progress } from '@/components/ui/progress'
-import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@/components/ui/select'
 import { ArrowUpCircle, LoaderCircle } from 'lucide-react'
 import { useState } from 'react'
-import { useFormState, useFormStatus } from 'react-dom'
+import { Controller, useForm } from 'react-hook-form'
 import translateDocument from './translate-document'
-import { languagesWithLabels } from './language-with-labels'
+
+type FormValues = {
+    file: FileList
+    language: string
+}
 
 export function DialogTranslateResume() {
     const [open, setOpen] = useState(false)
     const [progress, setProgress] = useState(0)
-    const [file, setFile] = useState<File | undefined>()
-    const [error, action] = useFormState(translateDocument, undefined)
+    const [error, setError] = useState<string | null>(null)
+    const {
+        control,
+        register,
+        handleSubmit,
+        reset,
+        formState: { isSubmitting },
+        watch,
+    } = useForm<FormValues>()
+
+    const onSubmit = async (data: FormValues) => {
+        startProgressBar()
+        const formData = new FormData()
+        formData.set('file', data.file[0])
+        formData.set('language', data.language)
+        const error = await translateDocument(formData)
+        setProgress(0)
+        if (error) {
+            setError(error)
+            return
+        }
+        setOpen(false)
+    }
 
     const startProgressBar = () => {
         setProgress(13)
@@ -42,44 +60,65 @@ export function DialogTranslateResume() {
             onOpenChange={(open) => {
                 setOpen(open)
                 if (open) {
-                    setProgress(0)
-                    setFile(undefined)
+                    setError(null)
+                    reset()
                 }
             }}
         >
             <DialogTrigger asChild>
                 <Button size={'lg'} className="mt-3">
-                    <ArrowUpCircle className="h-5 w-5 mr-2" /> Upload resume
+                    <ArrowUpCircle className="w-5 h-5 mr-2" /> Upload resume
                 </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[400px]">
                 <DialogHeader>
                     <DialogTitle>Upload resume</DialogTitle>
                 </DialogHeader>
-                <form
-                    onSubmit={() => startProgressBar()}
-                    action={action}
-                    className="py-2"
-                >
+                <form onSubmit={handleSubmit(onSubmit)} className="py-2">
                     <div className="grid space-y-1">
-                        <Button className="w-full" variant={'outline'} asChild>
-                            <label htmlFor="file">
-                                {file ? file.name : 'Choose file'}
-                            </label>
-                        </Button>
-                        <SelectLanguage />
-                        <Input
-                            onChange={(e) => {
-                                setFile(e.target.files?.[0])
-                            }}
+                        <Controller
                             name="file"
-                            id="file"
-                            type="file"
-                            accept=".html"
-                            className="hidden"
+                            control={control}
+                            defaultValue={undefined}
+                            render={({ field }) => (
+                                <>
+                                    <Button
+                                        className="w-full"
+                                        variant={'outline'}
+                                        asChild
+                                    >
+                                        <label htmlFor="file">
+                                            {field.value?.[0]?.name
+                                                ? field.value?.[0].name
+                                                : 'Choose file'}
+                                        </label>
+                                    </Button>
+                                    <Input
+                                        type="file"
+                                        {...register('file')}
+                                        accept=".pdf"
+                                        id="file"
+                                        className="hidden"
+                                    />
+                                </>
+                            )}
                         />
+                        <Controller
+                            name="language"
+                            control={control}
+                            defaultValue="enUS"
+                            render={({ field }) => {
+                                return (
+                                    <SelectLanguage
+                                        {...field}
+                                        onValueChange={field.onChange}
+                                    />
+                                )
+                            }}
+                        />
+
                         {error && (
-                            <p className="text-destructive text-sm mt-1 text-right">
+                            <p className="mt-1 text-sm text-right text-destructive">
                                 {error}
                             </p>
                         )}
@@ -88,16 +127,9 @@ export function DialogTranslateResume() {
                         <div className="mt-3">
                             <ProgressBar progress={progress} />
                         </div>
-                        <div className="mt-3 flex justify-end gap-1">
-                            <Button
-                                disabled={progress > 0}
-                                type="button"
-                                onClick={() => setOpen(false)}
-                                variant={'destructive'}
-                            >
-                                Cancel
-                            </Button>
-                            <ButtonSubmit disabled={!file} />
+                        <div className="flex justify-end gap-1 mt-3">
+                            <ButtonCancel closeModal={() => setOpen(false)} />
+                            <ButtonSubmit disabled={isSubmitting} />
                         </div>
                     </div>
                 </form>
@@ -107,47 +139,32 @@ export function DialogTranslateResume() {
 }
 
 function ProgressBar({ progress }: { progress: number }) {
-    const { pending } = useFormStatus()
-    if (!pending) return null
     if (progress === 0) return null
 
     return <Progress className="mt-3" value={progress} />
 }
 
-function SelectLanguage() {
-    return (
-        <Select defaultValue='enUS' name="language">
-            <SelectTrigger>
-                <SelectValue placeholder="Select a language" />
-            </SelectTrigger>
-            <SelectContent>
-                <SelectGroup>
-                    {languagesWithLabels.map((l) => (
-                        <SelectItem key={l.value} value={l.value}>
-                            {l.label}
-                        </SelectItem>
-                    ))}
-                </SelectGroup>
-            </SelectContent>
-        </Select>
-    )
-}
-
 function ButtonSubmit({ disabled }: { disabled?: boolean }) {
-    const { pending } = useFormStatus()
-
     return (
         <Button disabled={disabled}>
-            {pending ? (
+            {disabled ? (
                 <div className="flex items-center">
-                    <LoaderCircle className="animate-spin h-4 w-4 mr-2 duration-1000" />
+                    <LoaderCircle className="w-4 h-4 mr-2 duration-1000 animate-spin" />
                     Translating...
                 </div>
             ) : (
                 <div className="flex items-center">
-                    <ArrowUpCircle className="h-4 w-4 mr-2" /> Upload
+                    <ArrowUpCircle className="w-4 h-4 mr-2" /> Upload
                 </div>
             )}
+        </Button>
+    )
+}
+
+function ButtonCancel({ closeModal }: { closeModal: () => void }) {
+    return (
+        <Button type="button" onClick={closeModal} variant={'destructive'}>
+            Cancel
         </Button>
     )
 }

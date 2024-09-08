@@ -1,24 +1,26 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { ArrowDown } from 'lucide-react'
+import { ArrowDown, ArrowDownCircle } from 'lucide-react'
 
 export default function ButtonDownloadFile({
-    htmlString,
-    fileName,
+    signedUrl,
 }: {
-    htmlString: string
-    fileName: string
+    signedUrl: string
 }) {
     const handleDownload = async () => {
         try {
-            const blob = new Blob([htmlString], {
-                type: 'text/html',
+            const response = await fetch('https://proxy.cors.sh/' + signedUrl, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/pdf',
+                },
             })
+            const blob = await response.blob()
             const url = URL.createObjectURL(blob)
             const link = document.createElement('a')
-            link.href = url
-            link.setAttribute('download', fileName)
+            link.setAttribute('href', url)
+            link.setAttribute('download', 'document')
             document.body.appendChild(link)
             link.click()
             link.remove()
@@ -26,10 +28,11 @@ export default function ButtonDownloadFile({
             console.error('Error downloading file:', error)
         }
     }
+
     return (
-        <Button onClick={handleDownload} size={'lg'}>
-            <ArrowDown className="h-5 w-5 mr-2" />
-            Download file
+        <Button onClick={handleDownload} >
+            <ArrowDownCircle className="w-4 h-4 mr-1" />
+            Download
         </Button>
     )
 }

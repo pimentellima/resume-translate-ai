@@ -4,7 +4,7 @@ import { ArrowRight, ChevronLeft, ChevronRight, File } from 'lucide-react'
 import { redirect } from 'next/navigation'
 import { DialogTranslateResume } from './dialog-translate-resume'
 import TranslationItem from './translation-item'
-import { getTranslationsByUserId } from '@/services/translation'
+import { getTranslationsByUserId } from '@/services/translations'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 

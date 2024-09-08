@@ -1,7 +1,9 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import './globals.css'
 import { Toaster } from '@/components/ui/toaster'
+import '@react-pdf-viewer/core/lib/styles/index.css';
+import '@react-pdf-viewer/default-layout/lib/styles/index.css';
+import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -18,7 +20,7 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className={inter.className}>
-                <div className="min-h-screen flex flex-col">{children}</div>
+                <div className="flex flex-col min-h-screen">{children}</div>
                 <Toaster />
             </body>
         </html>

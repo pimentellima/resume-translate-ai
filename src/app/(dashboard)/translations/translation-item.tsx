@@ -6,15 +6,20 @@ import { File } from 'lucide-react'
 import Link from 'next/link'
 import ButtonDeleteTranslation from './button-delete-translation'
 import { languagesWithLabels } from './language-with-labels'
+import { getSignedUrlFromS3Key } from '@/services/s3'
+import ButtonDownloadFile from './[translationId]/button-download-file'
 
-export default function TranslationItem({
+export default async function TranslationItem({
     translation,
 }: {
     translation: InferSelectModel<typeof translations>
 }) {
+    const signedUrl = await getSignedUrlFromS3Key(translation.key as string)
+
     const language = languagesWithLabels.find(
         (l) => l.value === translation.language
     )?.label
+
     return (
         <div className="rounded-md p-3 bg-card grid grid-cols-[1fr,3fr] gap-3">
             <div className="grid grid-cols-[20px,1fr] gap-2 items-center">
@@ -26,7 +31,7 @@ export default function TranslationItem({
                     {translation.name}
                 </Link>
             </div>
-            <div className="grid grid-cols-[5fr,5fr,5fr,1fr] items-center justify-items-end">
+            <div className="grid grid-cols-[2fr,5fr,5fr,2fr] items-center justify-items-start">
                 <span>{(translation.fileSize * 0.001).toFixed(2)} KB</span>
                 <span className="text-nowrap">{language}</span>
                 <span className="text-nowrap">
@@ -35,7 +40,8 @@ export default function TranslationItem({
                             addSuffix: true,
                         })}
                 </span>
-                <div className="flex justify-end">
+                <div className='flex gap-1'>
+                    <ButtonDownloadFile signedUrl={signedUrl} />
                     <ButtonDeleteTranslation translationId={translation.id} />
                 </div>
             </div>

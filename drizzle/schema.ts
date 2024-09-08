@@ -3,6 +3,7 @@ import { relations, sql } from 'drizzle-orm'
 import { integer, pgEnum, pgTable, text, timestamp } from 'drizzle-orm/pg-core'
 
 export const languageEnum = pgEnum('languages', languages)
+export const formatEnum = pgEnum('formats', ['html', 'pdf'])
 
 export const users = pgTable('users', {
     id: text('id')
