@@ -12,7 +12,10 @@ const locationSchema = z.object({
 const resumeSchema = z.object({
     name: z.string(),
     jobTitle: z.string(),
-    summary: z.string(),
+    summarySection: z.object({
+        sectionTitle: z.string(),
+        text: z.string(),
+    }),
     location: locationSchema.optional(),
     contact: z
         .object({
@@ -21,34 +24,46 @@ const resumeSchema = z.object({
             linkedin: z.string().optional(),
         })
         .optional(),
-    skills: z.array(z.string()).optional(),
-    projects: z.array(
-        z.object({
-            title: z.string(),
-            date: z.string().optional(),
-            contributions: z.array(z.string()),
-        })
-    ),
-    education: z
+    skillsSection: z
         .object({
+            skills: z.array(z.string()),
+            sectionTitle: z.string(),
+        })
+        .optional(),
+    projectsSection: z.object({
+        projects: z.array(
+            z.object({
+                title: z.string(),
+                date: z.string().optional(),
+                contributions: z.array(z.string()),
+            })
+        ),
+        sectionTitle: z.string(),
+    }),
+    educationSection: z
+        .object({
+            sectionTitle: z.string(),
             universityName: z.string(),
             title: z.string(),
             date: z.string().optional(),
             contributions: z.array(z.string()).optional(),
         })
         .optional(),
-    experience: z.array(
-        z
-            .object({
-                jobTitle: z.string(),
-                date: z.string().optional(),
-                companyName: z.string(),
-                remote: z.boolean(),
-                location: locationSchema.optional(),
-                contributions: z.array(z.string()),
-            })
-            .describe('If remote is true, location should be empty.')
-    ),
+    experienceSection: z.object({
+        sectionTitle: z.string(),
+        experiences: z.array(
+            z
+                .object({
+                    jobTitle: z.string(),
+                    date: z.string().optional(),
+                    companyName: z.string(),
+                    remote: z.boolean(),
+                    location: locationSchema.optional(),
+                    contributions: z.array(z.string()),
+                })
+                .describe('If remote is true, location should be empty.')
+        ),
+    }),
 })
 
 export type Resume = z.infer<typeof resumeSchema>

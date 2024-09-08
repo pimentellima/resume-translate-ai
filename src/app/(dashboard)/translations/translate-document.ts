@@ -4,7 +4,7 @@ import { db } from '@/drizzle/index'
 import { translations } from '@/drizzle/schema'
 import { auth } from '@/lib/auth'
 import s3 from '@/lib/aws-s3'
-import { drawResume } from '@/lib/draw-resume'
+import { drawResumeDefault } from '@/lib/draw-resume-default'
 import { generateTranslatedResumeObject } from '@/lib/generate-translated-resume-object'
 import { redirect } from 'next/navigation'
 import z from 'zod'
@@ -34,7 +34,7 @@ export default async function translateDocument(formData: FormData) {
         }
         const language = languageValidation.data
         const pdfObject = await generateTranslatedResumeObject(file, language)
-        const pdfBuffer = await drawResume(pdfObject)
+        const pdfBuffer = await drawResumeDefault(pdfObject)
         const key = crypto.randomUUID()
 
         await s3.putObject({

@@ -1,7 +1,7 @@
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib'
 import { Resume } from './generate-translated-resume-object'
 
-export async function drawResume(resume: Resume): Promise<Uint8Array> {
+export async function drawResumeDefault(resume: Resume): Promise<Uint8Array> {
     // Create a new PDF document
     const pdfDoc = await PDFDocument.create()
     const page = pdfDoc.addPage([600, 850])
@@ -63,7 +63,7 @@ export async function drawResume(resume: Resume): Promise<Uint8Array> {
 
     if (contacts.length > 0) {
         yPosition -= 20
-        page.drawText('Contact: ' + contacts.join('/ '), {
+        page.drawText(contacts.join('/ '), {
             x: marginLeft,
             y: yPosition,
             size: fontSizeText,
@@ -74,7 +74,7 @@ export async function drawResume(resume: Resume): Promise<Uint8Array> {
 
     // Summary
     yPosition -= 40
-    page.drawText('Summary', {
+    page.drawText(resume.summarySection.sectionTitle, {
         x: marginLeft,
         y: yPosition,
         size: fontSizeSectionTitle,
@@ -83,7 +83,7 @@ export async function drawResume(resume: Resume): Promise<Uint8Array> {
     })
 
     yPosition -= 20
-    const summaryText = wrapText(resume.summary, 500, fontSizeText)
+    const summaryText = wrapText(resume.summarySection.text, 500, fontSizeText)
     summaryText.forEach((line) => {
         page.drawText(line, {
             x: marginLeft,
@@ -96,7 +96,7 @@ export async function drawResume(resume: Resume): Promise<Uint8Array> {
     })
 
     yPosition -= 20
-    page.drawText('Experience', {
+    page.drawText(resume.experienceSection.sectionTitle, {
         x: marginLeft,
         y: yPosition,
         size: fontSizeSectionTitle,
@@ -104,7 +104,7 @@ export async function drawResume(resume: Resume): Promise<Uint8Array> {
         color: blueColor,
     })
 
-    resume.experience.forEach((exp) => {
+    resume.experienceSection.experiences.forEach((exp) => {
         yPosition -= 20
         page.drawText(
             `${exp.jobTitle} at ${exp.companyName} (${
@@ -154,9 +154,9 @@ export async function drawResume(resume: Resume): Promise<Uint8Array> {
         })
     })
 
-    if (resume.projects) {
+    if (resume.projectsSection) {
         yPosition -= 20
-        page.drawText('Projects', {
+        page.drawText(resume.projectsSection.sectionTitle, {
             x: marginLeft,
             y: yPosition,
             size: fontSizeSectionTitle,
@@ -164,7 +164,7 @@ export async function drawResume(resume: Resume): Promise<Uint8Array> {
             color: blueColor,
         })
 
-        resume.projects.forEach((project) => {
+        resume.projectsSection.projects.forEach((project) => {
             yPosition -= 20
             page.drawText(project.title, {
                 x: marginLeft,
@@ -206,17 +206,17 @@ export async function drawResume(resume: Resume): Promise<Uint8Array> {
         })
     }
 
-    /* if (resume.skills) {
+    /*  if (resume.skillsSection) {
         yPosition -= 20
-        page.drawText('Skills', {
+        page.drawText(resume.skillsSection.sectionTitle, {
             x: marginLeft,
             y: yPosition,
-            size: fontSizeSubTitle,
+            size: fontSizeSectionTitle,
             font: helvetica,
             color: blackColor,
         })
         yPosition -= 20
-        const skillsText = resume.skills.join(', ')
+        const skillsText = resume.skillsSection.skills.join(', ')
         const wrappedSkills = wrapText(skillsText, 500, fontSizeText)
         wrappedSkills.forEach((line) => {
             page.drawText(line, {
@@ -230,9 +230,9 @@ export async function drawResume(resume: Resume): Promise<Uint8Array> {
         })
     } */
 
-    if (resume.education) {
+    if (resume.educationSection) {
         yPosition -= 20
-        page.drawText('Education', {
+        page.drawText(resume.educationSection.sectionTitle, {
             x: marginLeft,
             y: yPosition,
             size: fontSizeSectionTitle,
@@ -241,7 +241,7 @@ export async function drawResume(resume: Resume): Promise<Uint8Array> {
         })
         yPosition -= 20
         page.drawText(
-            `${resume.education.universityName} - ${resume.education.title}`,
+            `${resume.educationSection.universityName} - ${resume.educationSection.title}`,
             {
                 x: marginLeft,
                 y: yPosition,
@@ -251,9 +251,9 @@ export async function drawResume(resume: Resume): Promise<Uint8Array> {
             }
         )
 
-        if (resume.education.date) {
+        if (resume.educationSection.date) {
             yPosition -= 15
-            page.drawText(resume.education.date, {
+            page.drawText(resume.educationSection.date, {
                 x: marginLeft,
                 y: yPosition,
                 size: fontSizeText,
@@ -263,8 +263,8 @@ export async function drawResume(resume: Resume): Promise<Uint8Array> {
         }
 
         yPosition -= 20
-        if (resume.education.contributions) {
-            resume.education.contributions.forEach((contribution) => {
+        if (resume.educationSection.contributions) {
+            resume.educationSection.contributions.forEach((contribution) => {
                 const wrappedContributions = wrapText(
                     contribution,
                     500,
