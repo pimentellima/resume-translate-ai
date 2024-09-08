@@ -2,7 +2,7 @@ import 'server-only'
 import { openai } from '@ai-sdk/openai'
 import { generateObject } from 'ai'
 import z from 'zod'
-import pdf from 'pdf-parse/lib/pdf-parse'
+import { extractTextFromPdf } from './extract-text-from-pdf'
 
 const locationSchema = z.object({
     city: z.string(),
@@ -30,16 +30,18 @@ const resumeSchema = z.object({
             sectionTitle: z.string(),
         })
         .optional(),
-    projectsSection: z.object({
-        projects: z.array(
-            z.object({
-                title: z.string(),
-                date: z.string().optional(),
-                contributions: z.array(z.string()),
-            })
-        ),
-        sectionTitle: z.string(),
-    }),
+    projectsSection: z
+        .object({
+            projects: z.array(
+                z.object({
+                    title: z.string(),
+                    date: z.string().optional(),
+                    contributions: z.array(z.string()),
+                })
+            ),
+            sectionTitle: z.string(),
+        })
+        .optional(),
     educationSection: z
         .object({
             sectionTitle: z.string(),
@@ -72,14 +74,10 @@ export async function generateTranslatedResumeObject(
     file: File,
     language: string
 ) {
-    // return testResume
-    const fileArrayBuffer = await file.arrayBuffer()
-    const fileBuffer = Buffer.from(fileArrayBuffer)
-    const result = await pdf(fileBuffer)
-
+    const result = await extractTextFromPdf(file)
     const { object, usage: tokenUsage } = await generateObject({
         model: openai('gpt-4o-mini'),
-        system: 'You are a bot that takes a text extracted from a resume, translate the text to a specific language and generate a resume structure based on the text.',
+        system: 'You are a bot that takes a text extracted from a resume, translate the text to a specific language and generate a resume object.',
         prompt: `Text: \n\n ${result.text} \n\n Language: ${language}`,
         schema: resumeSchema,
     })

@@ -19,7 +19,6 @@ export default async function translateDocument(formData: FormData) {
     try {
         const session = await auth()
         if (!session) return 'Unauthenticated'
-
         const file = formData.get('file')
         if (!(file instanceof File)) return 'Invalid file'
         if (file.type !== 'application/pdf') return 'File must be a pdf'
@@ -48,7 +47,7 @@ export default async function translateDocument(formData: FormData) {
             id: translationId,
             key,
             fileSize: pdfBuffer.byteLength,
-            name: file.name,
+            name: file.name.replace('.pdf', '') + '-' + language + '.pdf',
             userId: session.user.id,
             language,
         })
