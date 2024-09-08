@@ -67,12 +67,12 @@ export function DialogTranslateResume() {
         >
             <DialogTrigger asChild>
                 <Button size={'lg'} className="mt-3">
-                    <ArrowUpCircle className="w-5 h-5 mr-2" /> Upload resume
+                    <ArrowUpCircle className="w-5 h-5 mr-2" /> Translate resume
                 </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[400px]">
                 <DialogHeader>
-                    <DialogTitle>Upload resume</DialogTitle>
+                    <DialogTitle>Translate resume</DialogTitle>
                 </DialogHeader>
                 <form onSubmit={handleSubmit(onSubmit)} className="py-2">
                     <div className="grid space-y-1">
@@ -154,7 +154,7 @@ function ButtonSubmit({ disabled }: { disabled?: boolean }) {
                 </div>
             ) : (
                 <div className="flex items-center">
-                    <ArrowUpCircle className="w-4 h-4 mr-2" /> Upload
+                    <ArrowUpCircle className="w-4 h-4 mr-2" /> Translate
                 </div>
             )}
         </Button>
