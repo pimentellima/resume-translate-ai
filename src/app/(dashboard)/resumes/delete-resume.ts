@@ -15,14 +15,14 @@ export default async function deleteResume(id: string) {
     }
 
     try {
-        const translation = await db.query.resumes.findFirst({
+        const resume = await db.query.resumes.findFirst({
             where: eq(resumes.id, id),
         })
-        if (!translation) return 'Translation not found'
+        if (!resume) return 'Resume not found'
 
         await s3.deleteObject({
             Bucket: process.env.S3_BUCKET_NAME!,
-            Key: translation.key as string,
+            Key: resume.key as string,
         })
         await db.delete(resumes).where(eq(resumes.id, id))
         revalidatePath('/resumes')

@@ -42,7 +42,7 @@ export default async function ResumeItem({
                 </span>
                 <div className='flex gap-1'>
                     <ButtonDownloadFile signedUrl={signedUrl} />
-                    <ButtonDeleteResume translationId={resume.id} />
+                    <ButtonDeleteResume resumeId={resume.id} />
                 </div>
             </div>
         </div>

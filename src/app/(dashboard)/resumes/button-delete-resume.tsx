@@ -4,15 +4,15 @@ import deleteResume from './delete-resume'
 import { Trash2 } from 'lucide-react'
 
 export default function ButtonDeleteResume({
-    translationId,
+    resumeId,
 }: {
-    translationId: string
+    resumeId: string
 }) {
     return (
         <Button
             variant={'destructive'}
             onClick={async () => {
-                const error = await deleteResume(translationId)
+                const error = await deleteResume(resumeId)
                 /* if (error) {
             toast({
                 title: 'Error',
