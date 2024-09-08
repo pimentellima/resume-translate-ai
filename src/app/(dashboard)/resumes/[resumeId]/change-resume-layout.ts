@@ -29,7 +29,11 @@ export async function changeResumeLayout(
 
         await db
             .update(resumes)
-            .set({ layout, fileSize: pdfBytes.byteLength })
+            .set({
+                layout,
+                fileSize: pdfBytes.byteLength,
+                resumeJson: JSON.stringify(resumeObject),
+            })
             .where(eq(resumes.id, resumeId))
     } catch (e) {
         console.log(e)

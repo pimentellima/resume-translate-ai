@@ -42,6 +42,7 @@ export async function changeResumeLanguage(
             .set({
                 language,
                 fileSize: pdfBytes.byteLength,
+                resumeJson: JSON.stringify(resumeObject),
                 name: resume.name.replace(resume.language, language),
             })
             .where(eq(resumes.id, resumeId))
