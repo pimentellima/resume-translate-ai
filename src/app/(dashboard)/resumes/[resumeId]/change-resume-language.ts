@@ -39,7 +39,11 @@ export async function changeResumeLanguage(
 
         await db
             .update(resumes)
-            .set({ language, fileSize: pdfBytes.byteLength })
+            .set({
+                language,
+                fileSize: pdfBytes.byteLength,
+                name: resume.name.replace(resume.language, language),
+            })
             .where(eq(resumes.id, resumeId))
     } catch {
         return 'An error occurred'

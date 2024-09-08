@@ -20,9 +20,11 @@ const layoutThumbnail = {
 export default function PopoverChangeLayout({
     resumeId,
     selectedLayout,
+    setLoading,
 }: {
     resumeId: string
     selectedLayout: InferSelectModel<typeof resumes>['layout']
+    setLoading: (loading: boolean) => void
 }) {
     const [open, setOpen] = useState(false)
     const layouts = Object.values(z.enum(layoutEnum.enumValues).Values)
@@ -45,6 +47,7 @@ export default function PopoverChangeLayout({
                         disabled={layout === selectedLayout}
                         onClick={async () => {
                             setOpen(false)
+                            setLoading(true)
                             const error = await changeResumeLayout(
                                 resumeId,
                                 layout
@@ -53,6 +56,7 @@ export default function PopoverChangeLayout({
                                 //
                                 return
                             }
+                            setLoading(false)
                         }}
                         key={index}
                         className="flex flex-col items-center"

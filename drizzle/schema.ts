@@ -48,7 +48,7 @@ export const resumes = pgTable('resumes', {
         .notNull(),
     key: text('key').notNull(),
     layout: layoutEnum('layout').notNull().default('simple'),
-    name: text('name'),
+    name: text('name').notNull().default(''),
     resumeJson: text('resumeJson').notNull().default(''),
     language: languageEnum('language').notNull(),
     fileSize: integer('fileSize').notNull(),

@@ -1,21 +1,25 @@
-import SelectLanguage from '@/components/select-language'
 import { Button } from '@/components/ui/button'
-import { getSignedUrlFromS3Key } from '@/services/s3'
 import { getResumeById } from '@/services/resumes'
-import { ArrowLeft, CircleSlash2Icon } from 'lucide-react'
+import { getSignedUrlFromS3Key } from '@/services/s3'
+import { ArrowLeft, CircleSlash2Icon, Loader, LoaderCircle } from 'lucide-react'
 import Link from 'next/link'
 import ButtonDownloadFile from './button-download-file'
 import PdfVisualizer from './pdf-visualizer'
 import PopoverChangeLayout from './popover-change-layout'
+import SelectResumeLanguage from './select-resume-language'
+import EditResume from './edit-resume'
 
 // export const revalidate = 1200
 
 export default async function ViewResumePage({
     params,
+    searchParams,
 }: {
     params: { resumeId: string }
+    searchParams?: { loading?: string }
 }) {
     const resume = await getResumeById(params.resumeId)
+    const loading = searchParams?.loading === 'true'
 
     if (!resume)
         return (
@@ -28,28 +32,16 @@ export default async function ViewResumePage({
             </div>
         )
 
-    const signedUrl = await getSignedUrlFromS3Key(resume.key as string)
+    const pdfUrl = await getSignedUrlFromS3Key(resume.key as string)
 
     return (
         <div className="flex justify-center py-4">
-            <div className="w-[700px]">
-                <div className="flex justify-between">
-                    <Button asChild variant={'outline'}>
-                        <Link href={'/resumes'}>
-                            <ArrowLeft className="w-5 h-5 mr-2" /> Go back
-                        </Link>
-                    </Button>
-                    <div className="flex gap-1">
-                        <PopoverChangeLayout
-                            selectedLayout={resume.layout}
-                            resumeId={resume.id}
-                        />
-                        <SelectLanguage defaultValue={resume.language} />
-                    </div>
-                    <ButtonDownloadFile signedUrl={signedUrl} />
-                </div>
-                <PdfVisualizer url={signedUrl} />
-            </div>
+            <EditResume
+                resumeId={resume.id}
+                language={resume.language}
+                layout={resume.layout}
+                pdfUrl={pdfUrl}
+            />
         </div>
     )
 }
