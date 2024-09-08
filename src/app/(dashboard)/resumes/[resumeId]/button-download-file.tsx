@@ -1,11 +1,12 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
+import { Button, ButtonProps } from '@/components/ui/button'
 import { ArrowDown, ArrowDownCircle } from 'lucide-react'
 
 export default function ButtonDownloadFile({
     signedUrl,
-}: {
+    ...props
+}: Omit<ButtonProps, 'onClick'> & {
     signedUrl: string
 }) {
     const handleDownload = async () => {
@@ -30,7 +31,7 @@ export default function ButtonDownloadFile({
     }
 
     return (
-        <Button onClick={handleDownload}>
+        <Button {...props} onClick={handleDownload}>
             <ArrowDownCircle className="w-4 h-4 mr-1" />
             Download
         </Button>
