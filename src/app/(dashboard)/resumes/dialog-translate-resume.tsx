@@ -80,7 +80,7 @@ export function DialogTranslateResume() {
                             name="file"
                             control={control}
                             defaultValue={undefined}
-                            render={({ field }) => (
+                            render={({ field: { ref, ...field } }) => (
                                 <>
                                     <Button
                                         className="w-full"

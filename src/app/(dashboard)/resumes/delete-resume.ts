@@ -1,12 +1,12 @@
 'use server'
 import { db } from '@/drizzle/index'
-import { translations } from '@/drizzle/schema'
+import { resumes } from '@/drizzle/schema'
 import { auth } from '@/lib/auth'
 import s3 from '@/lib/aws-s3'
 import { eq } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 
-export default async function deleteTranslation(id: string) {
+export default async function deleteResume(id: string) {
     const session = await auth()
     if (!session) return 'Unauthenticated'
 
@@ -15,8 +15,8 @@ export default async function deleteTranslation(id: string) {
     }
 
     try {
-        const translation = await db.query.translations.findFirst({
-            where: eq(translations.id, id),
+        const translation = await db.query.resumes.findFirst({
+            where: eq(resumes.id, id),
         })
         if (!translation) return 'Translation not found'
 
@@ -24,8 +24,8 @@ export default async function deleteTranslation(id: string) {
             Bucket: process.env.S3_BUCKET_NAME!,
             Key: translation.key as string,
         })
-        await db.delete(translations).where(eq(translations.id, id))
-        revalidatePath('/translations')
+        await db.delete(resumes).where(eq(resumes.id, id))
+        revalidatePath('/resumes')
     } catch (error) {
         console.log(error)
         return 'Internal error'

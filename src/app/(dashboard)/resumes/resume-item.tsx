@@ -1,23 +1,23 @@
 import { Button } from '@/components/ui/button'
-import { translations } from '@/drizzle/schema'
+import { resumes } from '@/drizzle/schema'
 import { formatDistanceToNow } from 'date-fns'
 import { InferSelectModel } from 'drizzle-orm'
 import { File } from 'lucide-react'
 import Link from 'next/link'
-import ButtonDeleteTranslation from './button-delete-translation'
+import ButtonDeleteResume from './button-delete-resume'
 import { languagesWithLabels } from './language-with-labels'
 import { getSignedUrlFromS3Key } from '@/services/s3'
-import ButtonDownloadFile from './[translationId]/button-download-file'
+import ButtonDownloadFile from './[resumeId]/button-download-file'
 
-export default async function TranslationItem({
-    translation,
+export default async function ResumeItem({
+    resume,
 }: {
-    translation: InferSelectModel<typeof translations>
+    resume: InferSelectModel<typeof resumes>
 }) {
-    const signedUrl = await getSignedUrlFromS3Key(translation.key as string)
+    const signedUrl = await getSignedUrlFromS3Key(resume.key as string)
 
     const language = languagesWithLabels.find(
-        (l) => l.value === translation.language
+        (l) => l.value === resume.language
     )?.label
 
     return (
@@ -26,23 +26,23 @@ export default async function TranslationItem({
                 <File className="inline w-6 h-6" />
                 <Link
                     className="overflow-hidden text-base text-ellipsis whitespace-nowrap hover:underline underline-offset-4"
-                    href={'/translations/' + translation.id}
+                    href={'/resumes/' + resume.id}
                 >
-                    {translation.name}
+                    {resume.name}
                 </Link>
             </div>
             <div className="grid grid-cols-[2fr,5fr,5fr,2fr] items-center justify-items-start">
-                <span>{(translation.fileSize * 0.001).toFixed(2)} KB</span>
+                <span>{(resume.fileSize * 0.001).toFixed(2)} KB</span>
                 <span className="text-nowrap">{language}</span>
                 <span className="text-nowrap">
-                    {translation.createdAt &&
-                        formatDistanceToNow(new Date(translation.createdAt), {
+                    {resume.createdAt &&
+                        formatDistanceToNow(new Date(resume.createdAt), {
                             addSuffix: true,
                         })}
                 </span>
                 <div className='flex gap-1'>
                     <ButtonDownloadFile signedUrl={signedUrl} />
-                    <ButtonDeleteTranslation translationId={translation.id} />
+                    <ButtonDeleteResume translationId={resume.id} />
                 </div>
             </div>
         </div>

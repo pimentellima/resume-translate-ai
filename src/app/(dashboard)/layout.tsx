@@ -2,7 +2,7 @@ import { redirect } from 'next/navigation'
 import { auth } from '../../lib/auth'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
-import DropdownMenuAccount from './translations/dropdown-menu-account'
+import DropdownMenuAccount from './resumes/dropdown-menu-account'
 
 export default async function Layout({
     children,
@@ -34,7 +34,7 @@ function Header() {
             </Button>
             <div className="flex gap-2">
                 <Button variant="link">
-                    <Link href={'/translations'}>Translations</Link>
+                    <Link href={'/resumes'}>Resumes</Link>
                 </Button>
                 <Button variant="link">
                     <Link href={'/upgrade'}>Upgrade</Link>

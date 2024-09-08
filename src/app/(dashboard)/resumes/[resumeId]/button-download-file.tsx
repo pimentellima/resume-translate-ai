@@ -10,7 +10,7 @@ export default function ButtonDownloadFile({
 }) {
     const handleDownload = async () => {
         try {
-            const response = await fetch('https://proxy.cors.sh/' + signedUrl, {
+            const response = await fetch(signedUrl, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/pdf',
@@ -30,7 +30,7 @@ export default function ButtonDownloadFile({
     }
 
     return (
-        <Button onClick={handleDownload} >
+        <Button onClick={handleDownload}>
             <ArrowDownCircle className="w-4 h-4 mr-1" />
             Download
         </Button>

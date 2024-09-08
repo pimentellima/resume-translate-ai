@@ -1,9 +1,9 @@
 'use client'
 import { Button } from '@/components/ui/button'
-import deleteTranslation from './delete-document'
+import deleteResume from './delete-resume'
 import { Trash2 } from 'lucide-react'
 
-export default function ButtonDeleteTranslation({
+export default function ButtonDeleteResume({
     translationId,
 }: {
     translationId: string
@@ -12,7 +12,7 @@ export default function ButtonDeleteTranslation({
         <Button
             variant={'destructive'}
             onClick={async () => {
-                const error = await deleteTranslation(translationId)
+                const error = await deleteResume(translationId)
                 /* if (error) {
             toast({
                 title: 'Error',

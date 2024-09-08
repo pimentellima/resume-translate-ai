@@ -2,7 +2,6 @@ import 'server-only'
 import { openai } from '@ai-sdk/openai'
 import { generateObject } from 'ai'
 import z from 'zod'
-import { extractTextFromPdf } from './extract-text-from-pdf'
 
 const locationSchema = z.object({
     city: z.string(),
@@ -71,14 +70,13 @@ const resumeSchema = z.object({
 export type Resume = z.infer<typeof resumeSchema>
 
 export async function generateTranslatedResumeObject(
-    file: File,
+    text: string,
     language: string
 ) {
-    const result = await extractTextFromPdf(file)
     const { object, usage: tokenUsage } = await generateObject({
         model: openai('gpt-4o-mini'),
         system: 'You are a bot that takes a text extracted from a resume, translate the text to a specific language and generate a resume object.',
-        prompt: `Text: \n\n ${result.text} \n\n Language: ${language}`,
+        prompt: `Text: \n\n ${text} \n\n Language: ${language}`,
         schema: resumeSchema,
     })
 

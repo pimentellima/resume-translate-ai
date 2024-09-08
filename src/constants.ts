@@ -23,3 +23,5 @@ export const languages = [
     'fiFI',
     'noNO',
 ] as [string, ...string[]]
+
+export const layouts = ['metro', 'simple'] as [string, ...string[]]

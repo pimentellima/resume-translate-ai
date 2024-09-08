@@ -1,7 +1,8 @@
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib'
-import { Resume } from './generate-translated-resume-object'
+import { Resume } from '../generate-translated-resume-object'
+import wrapText from '../wrap-text'
 
-export async function drawResumeDefault(resume: Resume): Promise<Uint8Array> {
+export async function drawResumeLayoutSimple(resume: Resume): Promise<Uint8Array> {
     // Create a new PDF document
     const pdfDoc = await PDFDocument.create()
     const page = pdfDoc.addPage([600, 850])
@@ -286,23 +287,4 @@ export async function drawResumeDefault(resume: Resume): Promise<Uint8Array> {
 
     const buffer = Buffer.from(await pdfDoc.save())
     return buffer
-}
-
-function wrapText(text: string, maxWidth: number, fontSize: number): string[] {
-    const words = text.split(' ')
-    const lines: string[] = []
-    let currentLine = ''
-
-    words.forEach((word) => {
-        const testLine = currentLine + word + ' '
-        if (testLine.length * fontSize * 0.5 < maxWidth) {
-            currentLine = testLine
-        } else {
-            lines.push(currentLine.trim())
-            currentLine = word + ' '
-        }
-    })
-
-    lines.push(currentLine.trim())
-    return lines
 }

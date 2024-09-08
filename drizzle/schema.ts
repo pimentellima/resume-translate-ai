@@ -1,9 +1,30 @@
-import { languages } from '@/constants'
+import { languages, layouts } from '@/constants'
 import { relations, sql } from 'drizzle-orm'
 import { integer, pgEnum, pgTable, text, timestamp } from 'drizzle-orm/pg-core'
 
-export const languageEnum = pgEnum('languages', languages)
-export const formatEnum = pgEnum('formats', ['html', 'pdf'])
+export const languageEnum = pgEnum('languages', [
+    'enUS',
+    'enGB',
+    'esES',
+    'esMX',
+    'frFR',
+    'deDE',
+    'itIT',
+    'ptPT',
+    'ptBR',
+    'ruRU',
+    'jaJP',
+    'koKR',
+    'zhCN',
+    'zhTW',
+    'arSA',
+    'hiIN',
+    'nlNL',
+    'svSE',
+    'fiFI',
+    'noNO',
+] )
+export const layoutEnum = pgEnum('layouts', ['metro', 'simple'])
 
 export const users = pgTable('users', {
     id: text('id')
@@ -17,7 +38,7 @@ export const users = pgTable('users', {
     createdAt: timestamp('createdAt').defaultNow(),
 })
 
-export const translations = pgTable('translations', {
+export const resumes = pgTable('resumes', {
     id: text('id')
         .notNull()
         .default(sql`gen_random_uuid()`)
@@ -25,8 +46,10 @@ export const translations = pgTable('translations', {
     userId: text('userId')
         .references(() => users.id, { onDelete: 'cascade' })
         .notNull(),
-    key: text('key'),
+    key: text('key').notNull(),
+    layout: layoutEnum('layout').notNull().default('simple'),
     name: text('name'),
+    resumeJson: text('resumeJson').notNull().default(''),
     language: languageEnum('language').notNull(),
     fileSize: integer('fileSize').notNull(),
     createdAt: timestamp('createdAt').defaultNow(),
@@ -44,9 +67,9 @@ export const refreshTokens = pgTable('refreshTokens', {
 })
 
 export const userRelations = relations(users, ({ many }) => ({
-    translations: many(translations)
+    resumes: many(resumes),
 }))
 
-export const translationRelations = relations(translations, ({ one }) => ({
-    user: one(users, { fields: [translations.userId], references: [users.id] }),
+export const resumesRelations = relations(resumes, ({ one }) => ({
+    user: one(users, { fields: [resumes.userId], references: [users.id] }),
 }))
