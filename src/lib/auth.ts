@@ -11,6 +11,7 @@ import { AuthOptions } from 'next-auth'
 import { getServerSession } from 'next-auth/next'
 import Credentials from 'next-auth/providers/credentials'
 import GoogleProvider from 'next-auth/providers/google'
+import EmailProvider from 'next-auth/providers/email'
 import * as z from 'zod'
 import { ACCESS_TOKEN_TTL } from '../constants'
 import { obtainAccessToken, refreshAccessToken } from '../services/tokens'
@@ -25,24 +26,20 @@ export const authOptions = {
     },
     callbacks: {
         async signIn({ user, account }) {
-            if (!user.email) return true
-            if (account?.provider === 'google') {
-                const existingUser = await db.query.users.findFirst({
-                    where: eq(users.googleId, user.id),
-                })
-                if (!existingUser) {
-                    const [newUser] = await db
-                        .insert(users)
-                        .values({ googleId: user.id })
-                        .returning()
-                    user.id = newUser.id
-                    return true
-                } else {
-                    user.id = existingUser.id
-                    return true
-                }
+            if (!user.email) return false
+            const existingUser = await db.query.users.findFirst({
+                where: eq(users.email, user.email),
+            })
+            if (!existingUser) {
+                const [newUser] = await db
+                    .insert(users)
+                    .values({ email: user.email })
+                    .returning()
+                user.id = newUser.id
+                return true
             }
-            return false
+            user.id = existingUser.id
+            return true
         },
         async jwt({ token, user, account }) {
             if (user) {
@@ -71,48 +68,11 @@ export const authOptions = {
         },
     },
     providers: [
-        Credentials({
-            name: 'Credentials',
-            credentials: {
-                email: {
-                    label: 'Email',
-                    type: 'text',
-                },
-                password: { label: 'Password', type: 'password' },
-            },
-            async authorize(credentials) {
-                const parsedCredentials = z
-                    .object({
-                        email: z.string().email(),
-                        password: z.string().min(6),
-                    })
-                    .safeParse(credentials)
-
-                if (parsedCredentials.success) {
-                    const { email, password } = parsedCredentials.data
-                    const user = await db.query.users.findFirst({
-                        where: eq(users.email, email),
-                    })
-
-                    if (!user || !user.password) return null
-                    const passwordsMatch = await bcrypt.compare(
-                        password,
-                        user.password
-                    )
-
-                    if (passwordsMatch)
-                        return {
-                            id: user.id,
-                        }
-                }
-
-                return null
-            },
-        }),
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID!,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
         }),
+        EmailProvider({}),
     ],
 } satisfies AuthOptions
 

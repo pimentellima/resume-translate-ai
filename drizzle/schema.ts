@@ -32,9 +32,6 @@ export const users = pgTable('users', {
         .default(sql`gen_random_uuid()`)
         .primaryKey(),
     email: text('email'),
-    password: text('password'),
-    googleId: text('googleId'),
-    linkedinId: text('linkedinId'),
     createdAt: timestamp('createdAt').defaultNow(),
 })
 
