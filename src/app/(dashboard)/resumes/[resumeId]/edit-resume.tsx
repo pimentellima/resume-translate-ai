@@ -8,6 +8,7 @@ import PdfVisualizer from './pdf-visualizer'
 import PopoverChangeLayout from './popover-change-layout'
 import SelectResumeLanguage from './select-resume-language'
 import { useState } from 'react'
+import { testDraw } from '../test-draw'
 
 export default function EditResume({
     layout,
@@ -21,6 +22,7 @@ export default function EditResume({
     pdfUrl: string
 }) {
     const [loading, setLoading] = useState(false)
+
     return (
         <div className="w-[700px]">
             <div className="flex justify-between">
@@ -29,12 +31,7 @@ export default function EditResume({
                         <ArrowLeft className="w-5 h-5 mr-2" /> Go back
                     </Link>
                 </Button>
-                <div className="flex gap-1">
-                    <PopoverChangeLayout
-                        setLoading={setLoading}
-                        selectedLayout={layout}
-                        resumeId={resumeId}
-                    />
+                <div>
                     <SelectResumeLanguage
                         setLoading={setLoading}
                         resumeId={resumeId}

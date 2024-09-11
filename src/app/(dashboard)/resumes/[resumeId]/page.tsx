@@ -1,25 +1,18 @@
 import { Button } from '@/components/ui/button'
 import { getResumeById } from '@/services/resumes'
 import { getSignedUrlFromS3Key } from '@/services/s3'
-import { ArrowLeft, CircleSlash2Icon, Loader, LoaderCircle } from 'lucide-react'
+import { CircleSlash2Icon } from 'lucide-react'
 import Link from 'next/link'
-import ButtonDownloadFile from './button-download-file'
-import PdfVisualizer from './pdf-visualizer'
-import PopoverChangeLayout from './popover-change-layout'
-import SelectResumeLanguage from './select-resume-language'
 import EditResume from './edit-resume'
 
 // export const revalidate = 1200
 
 export default async function ViewResumePage({
     params,
-    searchParams,
 }: {
     params: { resumeId: string }
-    searchParams?: { loading?: string }
 }) {
     const resume = await getResumeById(params.resumeId)
-    const loading = searchParams?.loading === 'true'
 
     if (!resume)
         return (

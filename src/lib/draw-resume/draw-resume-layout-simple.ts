@@ -41,20 +41,6 @@ export async function drawResumeLayoutSimple(resume: Resume): Promise<Uint8Array
         color: grayColor,
     })
 
-    /* if (resume.location) {
-        yPosition -= 20
-        page.drawText(
-            `Location: ${resume.location.city}, ${resume.location.state}`,
-            {
-                x: marginLeft,
-                y: yPosition,
-                size: fontSizeText,
-                font: helvetica,
-                color: blackColor,
-            }
-        )
-    } */
-
     const contacts: string[] = []
     if (resume.contact?.email) contacts.push(`${resume.contact.email}`)
     if (resume.contact?.phoneNumber)

@@ -38,7 +38,7 @@ export default async function translateDocument(formData: FormData) {
         const fileBuffer = Buffer.from(fileArrayBuffer)
         const text = await extractTextFromPdf(fileBuffer)
         const pdfObject = await generateTranslatedResumeObject(text, language)
-        const pdfBuffer = await generateResume(pdfObject, 'simple')
+        const pdfBuffer = await generateResume(pdfObject, 'metro')
         const key = crypto.randomUUID()
 
         await s3.putObject({
@@ -51,6 +51,7 @@ export default async function translateDocument(formData: FormData) {
         await db.insert(resumes).values({
             id: resumeId,
             key,
+            layout: 'metro',
             resumeJson: JSON.stringify(pdfObject),
             fileSize: pdfBuffer.byteLength,
             name: file.name.replace('.pdf', '') + '-' + language + '.pdf',

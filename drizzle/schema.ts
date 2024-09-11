@@ -47,7 +47,7 @@ export const resumes = pgTable('resumes', {
         .references(() => users.id, { onDelete: 'cascade' })
         .notNull(),
     key: text('key').notNull(),
-    layout: layoutEnum('layout').notNull().default('simple'),
+    layout: layoutEnum('layout').notNull().default('metro'),
     name: text('name').notNull().default(''),
     resumeJson: text('resumeJson').notNull().default(''),
     language: languageEnum('language').notNull(),

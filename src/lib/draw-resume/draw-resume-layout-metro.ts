@@ -1,112 +1,137 @@
-import { PDFDocument, rgb, StandardFonts } from 'pdf-lib'
+import { PDFDocument, PDFPage, rgb, StandardFonts } from 'pdf-lib'
 import { Resume } from '../generate-translated-resume-object'
 import wrapText from '../wrap-text'
+import fontkit from '@pdf-lib/fontkit'
+import { promises, readFile } from 'fs'
 
-export async function drawResumeLayoutMetro(resume: Resume): Promise<Uint8Array> {
+export async function drawResumeLayoutMetro(
+    resume: Resume
+): Promise<Uint8Array> {
     // Create a new PDF document
     const pdfDoc = await PDFDocument.create()
-    const page = pdfDoc.addPage([600, 850])
+    pdfDoc.registerFontkit(fontkit)
+    const poppinsLightBytes = await promises.readFile(
+        process.cwd() + '/public/fonts/Poppins/Poppins-Light.ttf'
+    )
+    const poppinsMediumBytes = await promises.readFile(
+        process.cwd() + '/public/fonts/Poppins/Poppins-Medium.ttf'
+    )
+    const poppinsLight = await pdfDoc.embedFont(poppinsLightBytes)
+    const poppinsMedium = await pdfDoc.embedFont(poppinsMediumBytes)
+    let page = pdfDoc.addPage([600, 850])
 
-    const greenColor = rgb(0, 1, 0)
-    const blackColor = rgb(0, 0, 0)
-    const grayColor = rgb(0.333, 0.333, 0.333)
+    const secondaryColor = rgb(0, 0, 0)
+    const primaryColor = rgb(0.25, 0.25, 0.25)
 
-    // Load standard fonts
-    const helvetica = await pdfDoc.embedFont(StandardFonts.Helvetica)
-    const helveticaBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold)
+    const fontSizeLg = 32
+    const fontSizeMd = 15
+    const fontSizeSm = 10
 
-    const fontSizeName = 21
-    const fontSizeJobTitle = 11
-    const fontSizeSectionTitle = 15
-    const fontSizeText = 10
+    let yPosition = 780
+    const marginLeft = 33
 
-    let yPosition = 800
-    const marginLeft = 10
+    const decreaseY = (offset: number) => {
+        if (yPosition - offset <= 0) {
+            page = pdfDoc.addPage([600, 850])
+            yPosition = 780
+        } else {
+            yPosition -= offset
+        }
+    }
 
     // Title: Name and Job Title
-    page.drawText(`${resume.name}`, {
+    page.drawText(`${resume.name.toUpperCase()}`, {
         x: marginLeft,
         y: yPosition,
-        size: fontSizeName,
-        font: helveticaBold,
-        color: blackColor,
+        size: fontSizeLg,
+        font: poppinsMedium,
+        color: primaryColor,
     })
 
-    yPosition -= 20
-    page.drawText(`${resume.jobTitle}`, {
+    if (resume.jobTitle) {
+        decreaseY(40)
+        page.drawText(`${resume.jobTitle}`, {
+            x: marginLeft,
+            y: yPosition,
+            size: fontSizeMd,
+            font: poppinsMedium,
+            color: secondaryColor,
+        })
+    }
+
+    decreaseY(20)
+    page.drawRectangle({
+        color: primaryColor,
         x: marginLeft,
         y: yPosition,
-        size: fontSizeJobTitle,
-        font: helvetica,
-        color: grayColor,
+        height: 4,
+        width: 600 - marginLeft * 2,
     })
-
-    /* if (resume.location) {
-        yPosition -= 20
-        page.drawText(
-            `Location: ${resume.location.city}, ${resume.location.state}`,
-            {
-                x: marginLeft,
-                y: yPosition,
-                size: fontSizeText,
-                font: helvetica,
-                color: blackColor,
-            }
-        )
-    } */
 
     const contacts: string[] = []
     if (resume.contact?.email) contacts.push(`${resume.contact.email}`)
     if (resume.contact?.phoneNumber)
         contacts.push(`${resume.contact.phoneNumber}`)
-    if (resume.contact?.linkedin)
-        contacts.push(`Linkedin: ${resume.contact.linkedin}`)
+    if (resume.contact?.linkedin) contacts.push(`${resume.contact.linkedin}`)
 
     if (contacts.length > 0) {
-        yPosition -= 20
+        decreaseY(20)
         page.drawText(contacts.join('/ '), {
             x: marginLeft,
             y: yPosition,
-            size: fontSizeText,
-            font: helvetica,
-            color: blackColor,
+            size: fontSizeSm,
+            font: poppinsLight,
+            color: primaryColor,
         })
     }
 
-    // Summary
-    yPosition -= 40
-    page.drawText(resume.summarySection.sectionTitle, {
-        x: marginLeft,
-        y: yPosition,
-        size: fontSizeSectionTitle,
-        font: helveticaBold,
-        color: greenColor,
-    })
-
-    yPosition -= 20
-    const summaryText = wrapText(resume.summarySection.text, 500, fontSizeText)
-    summaryText.forEach((line) => {
-        page.drawText(line, {
+    if (resume.summarySection) {
+        decreaseY(40)
+        page.drawText(resume.summarySection.sectionTitle.toUpperCase(), {
             x: marginLeft,
             y: yPosition,
-            size: fontSizeText,
-            font: helvetica,
-            color: blackColor,
+            size: fontSizeMd,
+            font: poppinsMedium,
+            color: secondaryColor,
         })
-        yPosition -= 15
-    })
+        decreaseY(20)
+        const summaryText = wrapText(
+            resume.summarySection.text,
+            500,
+            fontSizeSm
+        )
+        summaryText.forEach((line) => {
+            page.drawText(line, {
+                x: marginLeft,
+                y: yPosition,
+                size: fontSizeSm,
+                font: poppinsLight,
+                color: secondaryColor,
+            })
+            decreaseY(15)
+            if (yPosition <= 0) {
+                page = pdfDoc.addPage([600, 850])
+                yPosition = 780
+            }
+        })
+    }
 
-    yPosition -= 20
-    page.drawText(resume.experienceSection.sectionTitle, {
+    decreaseY(20)
+    if (yPosition <= 0) {
+        page = pdfDoc.addPage([600, 850])
+        yPosition = 780
+    }
+
+    page.drawText(resume.experienceSection.sectionTitle.toUpperCase(), {
         x: marginLeft,
         y: yPosition,
-        size: fontSizeSectionTitle,
-        font: helveticaBold,
-        color: greenColor,
+        size: fontSizeMd,
+        font: poppinsMedium,
+        color: secondaryColor,
     })
 
     resume.experienceSection.experiences.forEach((exp) => {
-        yPosition -= 20
+        decreaseY(20)
         page.drawText(
             `${exp.jobTitle} at ${exp.companyName} (${
                 exp.remote
@@ -118,171 +143,168 @@ export async function drawResumeLayoutMetro(resume: Resume): Promise<Uint8Array>
             {
                 x: marginLeft,
                 y: yPosition,
-                size: fontSizeText,
-                font: helveticaBold,
-                color: blackColor,
+                size: fontSizeSm,
+                font: poppinsMedium,
+                color: secondaryColor,
             }
         )
 
         if (exp.date) {
-            yPosition -= 15
+            decreaseY(15)
             page.drawText(exp.date, {
                 x: marginLeft,
                 y: yPosition,
-                size: fontSizeText,
-                font: helvetica,
-                color: grayColor,
+                size: fontSizeSm,
+                font: poppinsLight,
+                color: secondaryColor,
             })
         }
 
-        yPosition -= 20
+        decreaseY(20)
         exp.contributions.forEach((contribution) => {
-            const wrappedContributions = wrapText(
-                contribution,
-                500,
-                fontSizeText
-            )
+            const wrappedContributions = wrapText(contribution, 500, fontSizeSm)
             wrappedContributions.forEach((line, index) => {
                 page.drawText(index === 0 ? `• ${line}` : line, {
                     x: marginLeft + 5,
                     y: yPosition,
-                    size: fontSizeText,
-                    font: helvetica,
-                    color: grayColor,
+                    size: fontSizeSm,
+                    font: poppinsLight,
+                    color: secondaryColor,
                 })
-                yPosition -= 15
+                decreaseY(15)
             })
         })
     })
 
     if (resume.projectsSection) {
-        yPosition -= 20
-        page.drawText(resume.projectsSection.sectionTitle, {
+        decreaseY(20)
+        page.drawText(resume.projectsSection.sectionTitle.toUpperCase(), {
             x: marginLeft,
             y: yPosition,
-            size: fontSizeSectionTitle,
-            font: helveticaBold,
-            color: greenColor,
+            size: fontSizeMd,
+            font: poppinsMedium,
+            color: secondaryColor,
         })
 
         resume.projectsSection.projects.forEach((project) => {
-            yPosition -= 20
+            decreaseY(20)
             page.drawText(project.title, {
                 x: marginLeft,
                 y: yPosition,
-                size: fontSizeText,
-                font: helveticaBold,
-                color: blackColor,
+                size: fontSizeSm,
+                font: poppinsMedium,
+                color: secondaryColor,
             })
 
             if (project.date) {
-                yPosition -= 15
+                decreaseY(15)
                 page.drawText(project.date, {
                     x: marginLeft,
                     y: yPosition,
-                    size: fontSizeText,
-                    font: helvetica,
-                    color: grayColor,
+                    size: fontSizeSm,
+                    font: poppinsLight,
+                    color: secondaryColor,
                 })
             }
 
-            yPosition -= 20
+            decreaseY(20)
             project.contributions.forEach((contribution) => {
                 const wrappedContributions = wrapText(
                     contribution,
                     500,
-                    fontSizeText
+                    fontSizeSm
                 )
                 wrappedContributions.forEach((line, index) => {
                     page.drawText(index === 0 ? `• ${line}` : line, {
                         x: marginLeft + 5,
                         y: yPosition,
-                        size: fontSizeText,
-                        font: helvetica,
-                        color: grayColor,
+                        size: fontSizeSm,
+                        font: poppinsLight,
+                        color: secondaryColor,
                     })
-                    yPosition -= 15
+                    decreaseY(15)
                 })
             })
         })
     }
 
-    /*  if (resume.skillsSection) {
-        yPosition -= 20
-        page.drawText(resume.skillsSection.sectionTitle, {
-            x: marginLeft,
-            y: yPosition,
-            size: fontSizeSectionTitle,
-            font: helvetica,
-            color: blackColor,
-        })
-        yPosition -= 20
-        const skillsText = resume.skillsSection.skills.join(', ')
-        const wrappedSkills = wrapText(skillsText, 500, fontSizeText)
-        wrappedSkills.forEach((line) => {
-            page.drawText(line, {
-                x: marginLeft,
-                y: yPosition,
-                size: fontSizeText,
-                font: helvetica,
-                color: blackColor,
-            })
-            yPosition -= 15
-        })
-    } */
-
     if (resume.educationSection) {
-        yPosition -= 20
-        page.drawText(resume.educationSection.sectionTitle, {
+        decreaseY(20)
+        page.drawText(resume.educationSection.sectionTitle.toUpperCase(), {
             x: marginLeft,
             y: yPosition,
-            size: fontSizeSectionTitle,
-            font: helveticaBold,
-            color: greenColor,
+            size: fontSizeMd,
+            font: poppinsMedium,
+            color: secondaryColor,
         })
-        yPosition -= 20
+        decreaseY(20)
         page.drawText(
-            `${resume.educationSection.universityName} - ${resume.educationSection.title}`,
+            `${resume.educationSection.universityName}}` +
+                resume.educationSection.title
+                ? `- ${resume.educationSection.title}`
+                : '',
             {
                 x: marginLeft,
                 y: yPosition,
-                size: fontSizeText,
-                font: helveticaBold,
-                color: blackColor,
+                size: fontSizeSm,
+                font: poppinsMedium,
+                color: secondaryColor,
             }
         )
 
         if (resume.educationSection.date) {
-            yPosition -= 15
+            decreaseY(15)
             page.drawText(resume.educationSection.date, {
                 x: marginLeft,
                 y: yPosition,
-                size: fontSizeText,
-                font: helvetica,
-                color: grayColor,
+                size: fontSizeSm,
+                font: poppinsLight,
+                color: secondaryColor,
             })
         }
 
-        yPosition -= 20
+        decreaseY(20)
         if (resume.educationSection.contributions) {
             resume.educationSection.contributions.forEach((contribution) => {
                 const wrappedContributions = wrapText(
                     contribution,
                     500,
-                    fontSizeText
+                    fontSizeSm
                 )
                 wrappedContributions.forEach((line) => {
                     page.drawText(`• ${line}`, {
                         x: marginLeft + 5,
                         y: yPosition,
-                        size: fontSizeText,
-                        font: helvetica,
-                        color: grayColor,
+                        size: fontSizeSm,
+                        font: poppinsLight,
+                        color: secondaryColor,
                     })
-                    yPosition -= 15
+                    decreaseY(15)
                 })
             })
         }
+    }
+
+    if (resume.skillsSection) {
+        decreaseY(20)
+        page.drawText(resume.skillsSection.sectionTitle.toUpperCase(), {
+            x: marginLeft,
+            y: yPosition,
+            size: fontSizeMd,
+            font: poppinsMedium,
+            color: secondaryColor,
+        })
+        decreaseY(20)
+        resume.skillsSection.skills.forEach((skill, index) => {
+            page.drawText(skill, {
+                x: index % 2 === 0 ? marginLeft : marginLeft + 300,
+                y: yPosition,
+                size: fontSizeSm,
+                font: poppinsLight,
+                color: secondaryColor,
+            })
+            if (index % 2 !== 0) decreaseY(18)
+        })
     }
 
     const buffer = Buffer.from(await pdfDoc.save())

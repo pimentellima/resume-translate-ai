@@ -10,11 +10,11 @@ const locationSchema = z.object({
 
 const resumeSchema = z.object({
     name: z.string(),
-    jobTitle: z.string(),
+    jobTitle: z.string().optional(),
     summarySection: z.object({
         sectionTitle: z.string(),
         text: z.string(),
-    }),
+    }).optional(),
     location: locationSchema.optional(),
     contact: z
         .object({
@@ -45,7 +45,7 @@ const resumeSchema = z.object({
         .object({
             sectionTitle: z.string(),
             universityName: z.string(),
-            title: z.string(),
+            title: z.string().optional(),
             date: z.string().optional(),
             contributions: z.array(z.string()).optional(),
         })
@@ -75,7 +75,7 @@ export async function generateTranslatedResumeObject(
 ) {
     const { object, usage: tokenUsage } = await generateObject({
         model: openai('gpt-4o-mini'),
-        system: 'You are a bot that takes a text extracted from a resume, translate the text to a specific language and generate a resume object.',
+        system: 'You are a bot that takes a text extracted from a resume, translate the text to a specific language and generate a resume object. Text must be 1st person.',
         prompt: `Text: \n\n ${text} \n\n Language: ${language}`,
         schema: resumeSchema,
     })
