@@ -1,6 +1,7 @@
 'use client'
 
 import GoogleIcon from '@/components/google-icon'
+import GithubIcon from '@/components/github-icon'
 import { Button } from '@/components/ui/button'
 import {
     Card,
@@ -31,6 +32,15 @@ export default function SignInForm() {
                     <GoogleIcon className="w-5 h-5 mr-2" />
                     Sign in with Google
                 </Button>
+                <Button
+                    size={'lg'}
+                    onClick={() => signIn('github')}
+                    className="w-full mt-2"
+                >
+                    <GithubIcon className="w-5 h-5 mr-2" />
+                    Sign in with Github
+                </Button>
+
                 {error && (
                     <p className="mt-1 text-sm text-destructive">
                         An error occurred signing in

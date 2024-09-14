@@ -1,6 +1,5 @@
 import { db } from '@/drizzle/index'
 import { users } from '@/drizzle/schema'
-import bcrypt from 'bcryptjs'
 import { eq } from 'drizzle-orm'
 import {
     GetServerSidePropsContext,
@@ -9,10 +8,8 @@ import {
 } from 'next'
 import { AuthOptions } from 'next-auth'
 import { getServerSession } from 'next-auth/next'
-import Credentials from 'next-auth/providers/credentials'
 import GoogleProvider from 'next-auth/providers/google'
-import EmailProvider from 'next-auth/providers/email'
-import * as z from 'zod'
+import GithubProvider from 'next-auth/providers/github'
 import { ACCESS_TOKEN_TTL } from '../constants'
 import { obtainAccessToken, refreshAccessToken } from '../services/tokens'
 
@@ -26,7 +23,7 @@ export const authOptions = {
     },
     callbacks: {
         async signIn({ user, account }) {
-            if (!user.email) return false
+            if (!user.email) return '/sign-in?error=missingEmail'
             const existingUser = await db.query.users.findFirst({
                 where: eq(users.email, user.email),
             })
@@ -72,7 +69,10 @@ export const authOptions = {
             clientId: process.env.GOOGLE_CLIENT_ID!,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
         }),
-        EmailProvider({}),
+        GithubProvider({
+            clientId: process.env.GITHUB_CLIENT_ID!,
+            clientSecret: process.env.GITHUB_CLIENT_SECRET!,
+        }),
     ],
 } satisfies AuthOptions
 
