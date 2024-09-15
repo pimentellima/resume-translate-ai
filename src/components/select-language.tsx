@@ -1,4 +1,3 @@
-import { languagesWithLabels } from '@/app/(dashboard)/resumes/language-with-labels'
 import {
     Select,
     SelectContent,
@@ -7,6 +6,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select'
+import { languages } from '@/lib/languages'
 import { SelectProps } from '@radix-ui/react-select'
 
 export default function SelectLanguage({ children, ...props }: SelectProps) {
@@ -17,7 +17,7 @@ export default function SelectLanguage({ children, ...props }: SelectProps) {
             </SelectTrigger>
             <SelectContent>
                 <SelectGroup>
-                    {languagesWithLabels.map((l) => (
+                    {languages.map((l) => (
                         <SelectItem key={l.value} value={l.value}>
                             {l.label}
                         </SelectItem>
