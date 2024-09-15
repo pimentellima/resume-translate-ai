@@ -5,7 +5,7 @@ import { InferSelectModel } from 'drizzle-orm'
 import { File } from 'lucide-react'
 import Link from 'next/link'
 import ButtonDeleteResume from './button-delete-resume'
-import { languagesWithLabels } from './language-with-labels'
+import { languages } from '../../../lib/languages'
 import { getSignedUrlFromS3Key } from '@/services/s3'
 import ButtonDownloadFile from './[resumeId]/button-download-file'
 
@@ -16,7 +16,7 @@ export default async function ResumeItem({
 }) {
     const signedUrl = await getSignedUrlFromS3Key(resume.key as string)
 
-    const language = languagesWithLabels.find(
+    const language = languages.find(
         (l) => l.value === resume.language
     )?.label
 

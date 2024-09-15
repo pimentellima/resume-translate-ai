@@ -1,4 +1,4 @@
-export const languagesWithLabels = [
+export const languages = [
     { value: 'enUS', label: '🇺🇸 English (United States)' },
     { value: 'enGB', label: '🇬🇧 English (United Kingdom)' },
     { value: 'esES', label: '🇪🇸 Español (España)' },

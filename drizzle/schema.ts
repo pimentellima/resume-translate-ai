@@ -1,4 +1,3 @@
-import { languages, layouts } from '@/constants'
 import { relations, sql } from 'drizzle-orm'
 import { integer, pgEnum, pgTable, text, timestamp } from 'drizzle-orm/pg-core'
 
