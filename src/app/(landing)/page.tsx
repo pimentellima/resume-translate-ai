@@ -1,15 +1,13 @@
 import { Button } from '@/components/ui/button'
 import { LetterCaseCapitalizeIcon } from '@radix-ui/react-icons'
-import { FileText, Clock } from 'lucide-react'
-import { ArrowRight } from 'lucide-react'
+import { Clock, FileText } from 'lucide-react'
 import Link from 'next/link'
-import { languages } from '../../lib/languages'
 import LanguagesInfiniteScroll from './languages-infinite-scroll'
 
 export default function Home() {
     return (
-        <main className="flex-1 bg-accent-foreground">
-            <div className="px-64 py-20 text-left text-background">
+        <main className="flex-1 pb-32 scroll-smooth">
+            <div className="px-64 py-20 text-left text-background bg-accent-foreground">
                 <h1 className="font-serif text-6xl">
                     Translate your resume to any language
                 </h1>
@@ -19,20 +17,22 @@ export default function Home() {
                     translations.
                 </h2>
                 <div className="flex gap-2 mt-7">
-                    <Button asChild size={'lg'}>
+                    <Button asChild size={'lg'} className="text-base">
                         <Link href="/sign-in">Get started for free</Link>
                     </Button>
                 </div>
                 <div className="h-[700px] w-full rounded-md bg-background mt-20"></div>
             </div>
             <FeaturesSection />
+            <GetStartedSection />
+            <Footer />
         </main>
     )
 }
 
 function FeaturesSection() {
     return (
-        <div className="w-full py-12 bg-gray-50">
+        <section id="features" className="w-full py-32">
             <div className="container px-4 mx-auto">
                 <div className="grid grid-cols-1 gap-8 mb-12 md:grid-cols-3">
                     <div className="flex flex-col items-center text-center">
@@ -73,12 +73,89 @@ function FeaturesSection() {
                     </div>
                 </div>
                 <div className="p-8 rounded-lg text-card-foreground bg-card">
-                    <h2 className="mb-4 text-3xl font-bold">
+                    <h2 className="mb-4 font-serif text-3xl">
                         Translate for Any Job Market
                     </h2>
                     <LanguagesInfiniteScroll />
                 </div>
             </div>
-        </div>
+        </section>
+    )
+}
+
+function GetStartedSection() {
+    return (
+        <section
+            id="get-started"
+            className="flex flex-col items-center justify-center py-24 bg-card text-card-foreground"
+        >
+            <h2 className="font-serif text-5xl">Get started</h2>
+            <h3 className="mt-6">
+                Upload a resume and start translating. No credit card required.
+            </h3>
+            <Button className="mt-6 text-base" size={'lg'} variant={'default'}>
+                Sign in for free
+            </Button>
+        </section>
+    )
+}
+
+function Footer() {
+    return (
+        <footer className="pt-10 mx-20 mt-32 border-t">
+            <div className="grid grid-cols-3 px-5">
+                <div className="flex flex-col gap-2 text-sm">
+                    <p className="font-semibold ">Links</p>
+                    <Link
+                        className="hover:underline underline-offset-4"
+                        href="/"
+                    >
+                        Home
+                    </Link>
+                    <Link
+                        className="hover:underline underline-offset-4"
+                        href="#get-started"
+                    >
+                        Get started
+                    </Link>
+                    <Link
+                        className="hover:underline underline-offset-4"
+                        href="#features"
+                    >
+                        Features
+                    </Link>
+                    <Link
+                        className="hover:underline underline-offset-4"
+                        href="/pricing"
+                    >
+                        Pricing
+                    </Link>
+                </div>
+                <div className="flex flex-col gap-2 text-sm">
+                    <p className="font-semibold ">Legal</p>
+                    <Link
+                        className="hover:underline underline-offset-4"
+                        href="/privacy-policy"
+                    >
+                        Privacy policy
+                    </Link>
+                    <Link
+                        className="hover:underline underline-offset-4"
+                        href="/tos"
+                    >
+                        Terms of service
+                    </Link>
+                </div>
+                <div className="flex flex-col gap-2 text-sm">
+                    <p className="font-semibold ">Sign</p>
+                    <Link
+                        className="hover:underline underline-offset-4"
+                        href="/sign-in"
+                    >
+                        Log in to your account
+                    </Link>
+                </div>
+            </div>
+        </footer>
     )
 }
