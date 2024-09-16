@@ -7,7 +7,7 @@ import LanguagesInfiniteScroll from './languages-infinite-scroll'
 export default function Home() {
     return (
         <main className="flex-1 pb-32 scroll-smooth">
-            <div className="px-64 py-20 text-left text-background bg-accent-foreground">
+            <div className="px-64 pt-32 pb-20 text-left text-background bg-accent-foreground">
                 <h1 className="font-serif text-6xl">
                     Translate your resume to any language
                 </h1>
