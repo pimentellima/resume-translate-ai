@@ -107,25 +107,25 @@ function Footer() {
                 <div className="flex flex-col gap-2 text-sm">
                     <p className="font-semibold ">Links</p>
                     <Link
-                        className="hover:underline underline-offset-4"
+                        className="hover:underline underline-offset-4 w-max"
                         href="/"
                     >
                         Home
                     </Link>
                     <Link
-                        className="hover:underline underline-offset-4"
+                        className="hover:underline underline-offset-4 w-max"
                         href="#get-started"
                     >
                         Get started
                     </Link>
                     <Link
-                        className="hover:underline underline-offset-4"
+                        className="hover:underline underline-offset-4 w-max"
                         href="#features"
                     >
                         Features
                     </Link>
                     <Link
-                        className="hover:underline underline-offset-4"
+                        className="hover:underline underline-offset-4 w-max"
                         href="/pricing"
                     >
                         Pricing
@@ -134,13 +134,13 @@ function Footer() {
                 <div className="flex flex-col gap-2 text-sm">
                     <p className="font-semibold ">Legal</p>
                     <Link
-                        className="hover:underline underline-offset-4"
+                        className="hover:underline underline-offset-4 w-max"
                         href="/privacy-policy"
                     >
                         Privacy policy
                     </Link>
                     <Link
-                        className="hover:underline underline-offset-4"
+                        className="hover:underline underline-offset-4 w-max"
                         href="/tos"
                     >
                         Terms of service
@@ -149,7 +149,7 @@ function Footer() {
                 <div className="flex flex-col gap-2 text-sm">
                     <p className="font-semibold ">Sign</p>
                     <Link
-                        className="hover:underline underline-offset-4"
+                        className="hover:underline underline-offset-4 w-max"
                         href="/sign-in"
                     >
                         Log in to your account
