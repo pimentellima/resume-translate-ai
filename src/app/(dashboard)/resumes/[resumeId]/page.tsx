@@ -19,7 +19,7 @@ export default async function ViewResumePage({
     const isUserOwner = session?.user?.id === resume?.userId
 
     if (resume?.userId && !isUserOwner) {
-        redirect('/401')
+        redirect('/sign-in')
     }
 
     if (resume && session?.user && !resume.userId) {
