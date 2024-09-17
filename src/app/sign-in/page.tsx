@@ -1,6 +1,13 @@
 import { redirect } from 'next/navigation'
 import { auth } from '../../lib/auth'
-import SignInForm from './sign-in-form'
+import SignInOptions from '../../components/sign-in-options'
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card'
 
 export default async function SignInPage({
     searchParams,
@@ -16,7 +23,21 @@ export default async function SignInPage({
 
     return (
         <div className="flex items-center justify-center h-screen px-3 bg-background md:px-0">
-            <SignInForm redirectUri={redirectUri} />
+            <Card className="w-[400px]">
+                <CardHeader>
+                    <CardTitle className="text-2xl">
+                        Sign in to download resume
+                    </CardTitle>
+                    <CardDescription>
+                        {redirectUri
+                            ? 'You will be redirected to the download page'
+                            : 'Sign in to your account'}
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <SignInOptions redirectUri={redirectUri} />
+                </CardContent>
+            </Card>
         </div>
     )
 }
