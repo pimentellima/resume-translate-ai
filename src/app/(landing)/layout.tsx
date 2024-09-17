@@ -7,7 +7,7 @@ export default async function Layout({
     children: React.ReactNode
 }>) {
     return (
-        <div className="min-h-screen flex flex-col">
+        <div className="flex flex-col min-h-screen">
             <Header />
             {children}
         </div>
@@ -16,18 +16,17 @@ export default async function Layout({
 
 function Header() {
     return (
-        <header
-            className="sticky top-0 h-14 py-2 bg-background text-foreground w-full
-        flex items-center justify-between px-4 sm:px-8 md:px-12 z-10"
-        >
-            <Button variant="link">
-                <Link href={'/'}>Resume Translate</Link>
+        <header className="sticky top-0 z-10 flex items-center justify-between w-full px-4 py-2 h-14 bg-background text-foreground sm:px-8 md:px-12 scroll-smooth">
+            <Button className="text-base" variant="link">
+                <Link className="flex items-center" href={'/'}>
+                    Home
+                </Link>
             </Button>
             <div className="flex gap-2">
-                <Button variant="link">
+                <Button className="text-base" variant="link">
                     <Link href={'/pricing'}>Pricing</Link>
                 </Button>
-                <Button variant="link">
+                <Button className="text-base" variant="link">
                     <Link href={'/sign-in'}>Get started</Link>
                 </Button>
             </div>

@@ -3,7 +3,6 @@ import { LetterCaseCapitalizeIcon } from '@radix-ui/react-icons'
 import { ArrowRight, Clock, FileIcon, FileText } from 'lucide-react'
 import Link from 'next/link'
 import LanguagesInfiniteScroll from './languages-infinite-scroll'
-import createDocument from '../(dashboard)/resumes/create-document'
 import FormSubmitFile from './form-submit-file'
 
 export default function Home() {
@@ -113,7 +112,7 @@ function GetStartedSection() {
 
 function Footer() {
     return (
-        <footer className="pt-10 mx-20 mt-32 border-t">
+        <footer className="pt-10 mx-20 mt-32 border-t scroll-smooth">
             <div className="grid grid-cols-3 px-5">
                 <div className="flex flex-col gap-2 text-sm">
                     <p className="font-semibold ">Links</p>
