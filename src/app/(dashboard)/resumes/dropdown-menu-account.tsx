@@ -46,7 +46,7 @@ export default function DropdownMenuAccount() {
                     ) : (
                         <DropdownMenuItem>
                             <Link
-                                href={'/sign-in'}
+                                href={`/sign-in?redirect_uri=${process.env.NEXT_PUBLIC_URL}/resumes/${params.resumeId}`}
                                 className="flex items-center"
                             >
                                 <LogIn className="w-4 h-4 mr-2" />
