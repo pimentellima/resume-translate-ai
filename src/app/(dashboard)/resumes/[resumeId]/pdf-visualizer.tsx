@@ -1,7 +1,7 @@
 'use client'
 import { Viewer, Worker } from '@react-pdf-viewer/core'
-import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout'
 import { LoaderCircle } from 'lucide-react'
+
 
 export default function PdfVisualizer({
     url,
@@ -10,7 +10,6 @@ export default function PdfVisualizer({
     url: string
     loading: boolean
 }) {
-    const defaultLayoutPluginInstance = defaultLayoutPlugin()
     return (
         <>
             <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.js">
@@ -35,7 +34,7 @@ export default function PdfVisualizer({
                             )}
                             enableSmoothScroll={true}
                             fileUrl={url}
-                            plugins={[defaultLayoutPluginInstance]}
+                            // plugins={[defaultLayoutPluginInstance]}
                         />
                     )}
                 </div>
