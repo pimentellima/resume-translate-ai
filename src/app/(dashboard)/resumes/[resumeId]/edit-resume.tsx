@@ -8,6 +8,7 @@ import ButtonDownloadFile from './button-download-file'
 import PdfVisualizer from './pdf-visualizer'
 import SelectResumeLanguage from './select-resume-language'
 import { useSession } from 'next-auth/react'
+import { testDraw } from '../test-draw'
 
 export default function EditResume({
     language,

@@ -239,10 +239,11 @@ export async function drawResumeLayoutMetro(
         })
         decreaseY(20)
         page.drawText(
-            `${resume.educationSection.universityName}}` +
+            `${resume.educationSection.universityName} ${
                 resume.educationSection.title
-                ? `- ${resume.educationSection.title}`
-                : '',
+                    ? `- ${resume.educationSection.title}`
+                    : ''
+            }`,
             {
                 x: marginLeft,
                 y: yPosition,

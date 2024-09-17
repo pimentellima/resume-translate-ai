@@ -48,8 +48,8 @@ const resumeSchema = z.object({
     educationSection: z
         .object({
             sectionTitle: z.string(),
-            universityName: z.string().optional(),
-            title: z.string().optional().optional(),
+            universityName: z.string().optional().describe('The name of the college/university'),
+            title: z.string().optional().optional().describe('The title of the degree'),
             date: z.string().optional().optional(),
             contributions: z.array(z.string()).optional(),
         })
