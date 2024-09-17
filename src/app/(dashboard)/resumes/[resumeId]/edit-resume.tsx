@@ -26,7 +26,7 @@ export default function EditResume({
         <div className="w-[700px]">
             <div className="flex justify-between">
                 {session?.data?.user && (
-                    <Button asChild variant={'outline'}>
+                    <Button size={'lg'} asChild variant={'outline'}>
                         <Link href={'/resumes'}>
                             <ArrowLeft className="w-5 h-5 mr-2" /> Resumes
                         </Link>
@@ -39,7 +39,7 @@ export default function EditResume({
                         selectedLanguage={language}
                     />
                 </div>
-                <ButtonDownloadFile signedUrl={pdfUrl} />
+                <ButtonDownloadFile label='Download' size={'lg'} signedUrl={pdfUrl} />
             </div>
             <PdfVisualizer url={pdfUrl} loading={loading} />
         </div>

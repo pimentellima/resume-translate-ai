@@ -1,4 +1,3 @@
-import { Button } from '@/components/ui/button'
 import { resumes } from '@/drizzle/schema'
 import { formatDistanceToNow } from 'date-fns'
 import { InferSelectModel } from 'drizzle-orm'
@@ -21,7 +20,7 @@ export default async function ResumeItem({
     )?.label
 
     return (
-        <div className="rounded-md p-3 bg-card grid grid-cols-[1fr,3fr] gap-3">
+        <div className="rounded-md p-3 bg-card grid grid-cols-[2fr,4fr] gap-3">
             <div className="grid grid-cols-[20px,1fr] gap-2 items-center">
                 <File className="inline w-6 h-6" />
                 <Link
@@ -31,7 +30,7 @@ export default async function ResumeItem({
                     {resume.name}
                 </Link>
             </div>
-            <div className="grid grid-cols-[2fr,5fr,5fr,2fr] items-center justify-items-start">
+            <div className="grid grid-cols-[6fr,10fr,10fr,1fr] items-center justify-items-start">
                 <span>{(resume.fileSize * 0.001).toFixed(2)} KB</span>
                 <span className="text-nowrap">{language}</span>
                 <span className="text-nowrap">
@@ -41,7 +40,7 @@ export default async function ResumeItem({
                         })}
                 </span>
                 <div className='flex gap-1'>
-                    <ButtonDownloadFile variant={'secondary'} signedUrl={signedUrl} />
+                    <ButtonDownloadFile size={'icon'} title='Download' variant={'secondary'} signedUrl={signedUrl} />
                     <ButtonDeleteResume resumeId={resume.id} />
                 </div>
             </div>

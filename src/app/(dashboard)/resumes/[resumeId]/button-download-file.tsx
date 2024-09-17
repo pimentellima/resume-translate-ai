@@ -7,9 +7,11 @@ import { useParams, useRouter } from 'next/navigation'
 
 export default function ButtonDownloadFile({
     signedUrl,
+    label,
     ...props
 }: Omit<ButtonProps, 'onClick'> & {
     signedUrl: string
+    label?: string
 }) {
     const session = useSession()
     const router = useRouter()
@@ -44,8 +46,8 @@ export default function ButtonDownloadFile({
 
     return (
         <Button {...props} onClick={handleDownload}>
-            <ArrowDownCircle className="w-4 h-4 mr-1" />
-            Download
+            <ArrowDownCircle className="w-4 h-4" />
+            {label && <span className='ml-1'>{label}</span>}
         </Button>
     )
 }

@@ -3,6 +3,7 @@ import Link from 'next/link'
 import DropdownMenuAccount from './resumes/dropdown-menu-account'
 import SessionProvider from './session-provider'
 import { auth } from '@/lib/auth'
+import { SparklesIcon, StarsIcon, WandSparkles } from 'lucide-react'
 
 export default async function Layout({
     children,
@@ -26,21 +27,26 @@ async function Header() {
 
     return (
         <header className="sticky top-0 z-10 flex items-center justify-between w-full px-4 py-2 h-14 bg-card text-card-foreground sm:px-8 md:px-12">
-            <Button variant="link">
-                <Link href={'/'}>Resume Translate</Link>
-            </Button>
-            <div className="flex gap-2">
+            {!!session?.user ? (
+                <Button className="text-base" variant="link" asChild>
+                    <Link href={'/resumes'}>Resumes</Link>
+                </Button>
+            ) : (
+                <div></div>
+            )}
+
+            <div className="flex">
                 {!!session?.user && (
-                    <>
-                        <Button variant="link">
-                            <Link href={'/resumes'}>Resumes</Link>
-                        </Button>
-                        <Button variant="link">
-                            <Link href={'/upgrade'}>Upgrade</Link>
-                        </Button>
-                    </>
+                    <Button className="text-base" variant="link" asChild>
+                        <Link href={'/upgrade'} className="flex items-center">
+                            <SparklesIcon className="w-5 h-5 mr-2 text-yellow-400 fill-yellow-400" />{' '}
+                            Upgrade
+                        </Link>
+                    </Button>
                 )}
-                <DropdownMenuAccount />
+                <div className="ml-2">
+                    <DropdownMenuAccount />
+                </div>
             </div>
         </header>
     )
