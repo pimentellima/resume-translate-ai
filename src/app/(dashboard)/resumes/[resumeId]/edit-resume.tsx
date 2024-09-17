@@ -3,20 +3,16 @@
 import { Button } from '@/components/ui/button'
 import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
+import { useState } from 'react'
 import ButtonDownloadFile from './button-download-file'
 import PdfVisualizer from './pdf-visualizer'
-import PopoverChangeLayout from './popover-change-layout'
 import SelectResumeLanguage from './select-resume-language'
-import { useState } from 'react'
-import { testDraw } from '../test-draw'
 
 export default function EditResume({
-    layout,
     language,
     resumeId,
     pdfUrl,
 }: {
-    layout: any
     language: any
     resumeId: string
     pdfUrl: string

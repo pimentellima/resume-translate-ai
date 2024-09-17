@@ -22,7 +22,7 @@ export const languageEnum = pgEnum('languages', [
     'svSE',
     'fiFI',
     'noNO',
-] )
+])
 export const layoutEnum = pgEnum('layouts', ['metro', 'simple'])
 
 export const users = pgTable('users', {
@@ -39,16 +39,15 @@ export const resumes = pgTable('resumes', {
         .notNull()
         .default(sql`gen_random_uuid()`)
         .primaryKey(),
-    userId: text('userId')
-        .references(() => users.id, { onDelete: 'cascade' })
-        .notNull(),
+    userId: text('userId').references(() => users.id, { onDelete: 'cascade' }),
     key: text('key').notNull(),
     layout: layoutEnum('layout').notNull().default('metro'),
     name: text('name').notNull().default(''),
     resumeJson: text('resumeJson').notNull().default(''),
-    language: languageEnum('language').notNull(),
+    language: languageEnum('language'),
     fileSize: integer('fileSize').notNull(),
     createdAt: timestamp('createdAt').defaultNow(),
+    expiresAt: timestamp('expiresAt'),
 })
 
 export const refreshTokens = pgTable('refreshTokens', {

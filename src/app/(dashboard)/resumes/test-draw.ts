@@ -1,10 +1,10 @@
 'use server'
 
-import generateResume from '@/lib/draw-resume/generate-resume'
+import generateResumePdf from '@/lib/draw-resume/generate-resume-pdf'
 import { promises } from 'fs'
 
 export async function testDraw() {
-    const buffer = await generateResume(testPdf, 'metro')
+    const buffer = await generateResumePdf(testPdf, 'metro')
     await promises.writeFile('test.pdf', buffer)
 }
 

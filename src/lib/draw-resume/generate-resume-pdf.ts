@@ -1,10 +1,10 @@
 import { InferSelectModel } from 'drizzle-orm'
-import { Resume } from '../generate-translated-resume-object'
+import { Resume } from '../generate-resume-object'
 import { resumes } from '@/drizzle/schema'
 import { drawResumeLayoutSimple } from './draw-resume-layout-simple'
 import { drawResumeLayoutMetro } from './draw-resume-layout-metro'
 
-export default async function generateResume(
+export default async function generateResumePdf(
     resume: Resume,
     layout: InferSelectModel<typeof resumes>['layout']
 ) {

@@ -3,32 +3,27 @@
 import { db } from '@/drizzle/index'
 import { resumes } from '@/drizzle/schema'
 import s3 from '@/lib/aws-s3'
-import generateResume from '@/lib/draw-resume/generate-resume'
+import generateResumePdf from '@/lib/draw-resume/generate-resume-pdf'
 import { extractTextFromPdf } from '@/lib/extract-text-from-pdf'
-import {
-    generateTranslatedResumeObject,
-    Resume,
-} from '@/lib/generate-translated-resume-object'
-import { getFileBytesFromS3Key } from '@/services/s3'
-import { eq, InferSelectModel } from 'drizzle-orm'
+import { generateResumeObject, Resume } from '@/lib/generate-resume-object'
+import { getFileFromS3 } from '@/services/s3'
+import { eq, InferInsertModel, InferSelectModel } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 
 export async function changeResumeLanguage(
     resumeId: string,
-    language: InferSelectModel<typeof resumes>['language']
+    language: InferInsertModel<typeof resumes>['language']
 ) {
     try {
         const resume = await db.query.resumes.findFirst({
             where: eq(resumes.id, resumeId),
         })
         if (!resume) return 'Document not found'
-        const fileBuffer = await getFileBytesFromS3Key(resume.key)
+        if (!language) return 'No language selected'
+        const fileBuffer = await getFileFromS3(resume.key)
         const text = await extractTextFromPdf(fileBuffer)
-        const resumeObject = await generateTranslatedResumeObject(
-            text,
-            language
-        )
-        const pdfBytes = await generateResume(resumeObject, resume.layout)
+        const resumeObject = await generateResumeObject(text, language)
+        const pdfBytes = await generateResumePdf(resumeObject, resume.layout)
 
         await s3.putObject({
             Bucket: process.env.S3_BUCKET_NAME,
@@ -43,7 +38,9 @@ export async function changeResumeLanguage(
                 language,
                 fileSize: pdfBytes.byteLength,
                 resumeJson: JSON.stringify(resumeObject),
-                name: resume.name.replace(resume.language, language),
+                name: resume.language
+                    ? resume.name.replace(resume.language, language)
+                    : resume.name.replace('.pdf', '') + '-' + language + '.pdf',
             })
             .where(eq(resumes.id, resumeId))
     } catch {

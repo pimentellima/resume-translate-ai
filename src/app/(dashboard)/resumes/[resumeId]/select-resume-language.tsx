@@ -16,7 +16,7 @@ export default function SelectResumeLanguage({
 }) {
     return (
         <SelectLanguage
-            defaultValue={selectedLanguage}
+            defaultValue={selectedLanguage || undefined}
             onValueChange={async (language) => {
                 setLoading(true)
                 const error = await changeResumeLanguage(

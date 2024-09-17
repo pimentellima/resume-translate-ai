@@ -1,5 +1,5 @@
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib'
-import { Resume } from '../generate-translated-resume-object'
+import { Resume } from '../generate-resume-object'
 import wrapText from '../wrap-text'
 
 export async function drawResumeLayoutSimple(resume: Resume): Promise<Uint8Array> {

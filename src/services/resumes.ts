@@ -24,3 +24,7 @@ export async function getResumesByUserId(userId: string, page = 1) {
 
     return { userResumes, count: countRows[0].count }
 }
+
+export async function updateResumeUser(resumeId: string, userId: string) {
+    await db.update(resumes).set({ userId })
+}

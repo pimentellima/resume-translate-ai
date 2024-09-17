@@ -1,5 +1,5 @@
 import { PDFDocument, PDFPage, rgb, StandardFonts } from 'pdf-lib'
-import { Resume } from '../generate-translated-resume-object'
+import { Resume } from '../generate-resume-object'
 import wrapText from '../wrap-text'
 import fontkit from '@pdf-lib/fontkit'
 import { promises, readFile } from 'fs'

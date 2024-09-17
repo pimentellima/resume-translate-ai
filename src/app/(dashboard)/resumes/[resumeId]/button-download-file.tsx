@@ -2,6 +2,8 @@
 
 import { Button, ButtonProps } from '@/components/ui/button'
 import { ArrowDown, ArrowDownCircle } from 'lucide-react'
+import { useSession } from 'next-auth/react'
+import { useParams, useRouter } from 'next/navigation'
 
 export default function ButtonDownloadFile({
     signedUrl,
@@ -9,7 +11,17 @@ export default function ButtonDownloadFile({
 }: Omit<ButtonProps, 'onClick'> & {
     signedUrl: string
 }) {
+    const session = useSession()
+    const router = useRouter()
+    const params = useParams()
+
     const handleDownload = async () => {
+        if (!session?.data?.user) {
+            router.push(
+                `/sign-in?redirect_uri=${process.env.NEXT_PUBLIC_URL}/resumes/${params.resumeId}`
+            )
+            return
+        }
         try {
             const response = await fetch(signedUrl, {
                 method: 'GET',

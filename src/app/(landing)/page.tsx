@@ -1,8 +1,10 @@
 import { Button } from '@/components/ui/button'
 import { LetterCaseCapitalizeIcon } from '@radix-ui/react-icons'
-import { Clock, FileText } from 'lucide-react'
+import { ArrowRight, Clock, FileIcon, FileText } from 'lucide-react'
 import Link from 'next/link'
 import LanguagesInfiniteScroll from './languages-infinite-scroll'
+import createDocument from '../(dashboard)/resumes/create-document'
+import FormSubmitFile from './form-submit-file'
 
 export default function Home() {
     return (
@@ -17,8 +19,17 @@ export default function Home() {
                     translations.
                 </h2>
                 <div className="flex gap-2 mt-7">
-                    <Button asChild size={'lg'} className="text-base">
-                        <Link href="/sign-in">Get started for free</Link>
+                    <FormSubmitFile />
+                    <Button
+                        asChild
+                        className="text-base"
+                        size={'lg'}
+                        variant={'ghost'}
+                    >
+                        <Link href={'sign-in'}>
+                            Sign in to your account
+                            <ArrowRight className="w-5 h-5 ml-2" />
+                        </Link>
                     </Button>
                 </div>
                 <div className="h-[700px] w-full rounded-md bg-background mt-20"></div>

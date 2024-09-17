@@ -1,9 +1,11 @@
 import { Button } from '@/components/ui/button'
-import { getResumeById } from '@/services/resumes'
+import { getResumeById, updateResumeUser } from '@/services/resumes'
 import { getSignedUrlFromS3Key } from '@/services/s3'
 import { CircleSlash2Icon } from 'lucide-react'
 import Link from 'next/link'
 import EditResume from './edit-resume'
+import { auth } from '@/lib/auth'
+import { redirect } from 'next/navigation'
 
 // export const revalidate = 1200
 
@@ -12,7 +14,17 @@ export default async function ViewResumePage({
 }: {
     params: { resumeId: string }
 }) {
+    const session = await auth()
     const resume = await getResumeById(params.resumeId)
+    const isUserOwner = session?.user?.id === resume?.userId
+
+    if (resume?.userId && !isUserOwner) {
+        redirect('/401')
+    }
+
+    if (resume && session?.user && !resume.userId) {
+        await updateResumeUser(resume.id, session.user.id)
+    }
 
     if (!resume)
         return (
@@ -32,7 +44,6 @@ export default async function ViewResumePage({
             <EditResume
                 resumeId={resume.id}
                 language={resume.language}
-                layout={resume.layout}
                 pdfUrl={pdfUrl}
             />
         </div>

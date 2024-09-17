@@ -13,7 +13,7 @@ export default function SelectLanguage({ children, ...props }: SelectProps) {
     return (
         <Select {...props}>
             <SelectTrigger>
-                <SelectValue placeholder="Select a language" />
+                <SelectValue placeholder="Select a language to translate" />
             </SelectTrigger>
             <SelectContent>
                 <SelectGroup>
