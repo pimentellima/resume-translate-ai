@@ -7,6 +7,7 @@ import { useState } from 'react'
 import ButtonDownloadFile from './button-download-file'
 import PdfVisualizer from './pdf-visualizer'
 import SelectResumeLanguage from './select-resume-language'
+import { useSession } from 'next-auth/react'
 
 export default function EditResume({
     language,
@@ -18,15 +19,18 @@ export default function EditResume({
     pdfUrl: string
 }) {
     const [loading, setLoading] = useState(false)
+    const session = useSession()
 
     return (
         <div className="w-[700px]">
             <div className="flex justify-between">
-                <Button asChild variant={'outline'}>
-                    <Link href={'/resumes'}>
-                        <ArrowLeft className="w-5 h-5 mr-2" /> Go back
-                    </Link>
-                </Button>
+                {session?.data?.user && (
+                    <Button asChild variant={'outline'}>
+                        <Link href={'/resumes'}>
+                            <ArrowLeft className="w-5 h-5 mr-2" /> Resumes
+                        </Link>
+                    </Button>
+                )}
                 <div>
                     <SelectResumeLanguage
                         setLoading={setLoading}
