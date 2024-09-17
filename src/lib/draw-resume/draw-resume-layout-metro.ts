@@ -161,7 +161,7 @@ export async function drawResumeLayoutMetro(
         }
 
         decreaseY(20)
-        exp.contributions.forEach((contribution) => {
+        exp.contributions?.forEach((contribution) => {
             const wrappedContributions = wrapText(contribution, 500, fontSizeSm)
             wrappedContributions.forEach((line, index) => {
                 page.drawText(index === 0 ? `• ${line}` : line, {

@@ -30,7 +30,8 @@ const resumeSchema = z.object({
             skills: z.array(z.string()),
             sectionTitle: z.string(),
         })
-        .optional(),
+        .optional()
+        .describe('Skills section only exists if there are at least one skill.'),
     projectsSection: z
         .object({
             projects: z.array(
@@ -42,16 +43,20 @@ const resumeSchema = z.object({
             ),
             sectionTitle: z.string(),
         })
-        .optional(),
+        .optional()
+        .describe('Projects section only exists if there are projects.'),
     educationSection: z
         .object({
             sectionTitle: z.string(),
-            universityName: z.string(),
-            title: z.string().optional(),
-            date: z.string().optional(),
+            universityName: z.string().optional(),
+            title: z.string().optional().optional(),
+            date: z.string().optional().optional(),
             contributions: z.array(z.string()).optional(),
         })
-        .optional(),
+        .optional()
+        .describe(
+            'Education section only exists if there is a university name or title.'
+        ),
     experienceSection: z.object({
         sectionTitle: z.string(),
         experiences: z.array(
@@ -59,10 +64,10 @@ const resumeSchema = z.object({
                 .object({
                     jobTitle: z.string(),
                     date: z.string().optional(),
-                    companyName: z.string(),
+                    companyName: z.string().optional(),
                     remote: z.boolean(),
                     location: locationSchema.optional(),
-                    contributions: z.array(z.string()),
+                    contributions: z.array(z.string()).optional(),
                 })
                 .describe('If remote is true, location should be empty.')
         ),
