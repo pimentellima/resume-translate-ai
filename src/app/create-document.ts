@@ -15,6 +15,7 @@ export type FormValues = {
 }
 
 export default async function createDocument(
+    error: string | undefined,
     formData: FormData
 ): Promise<string | undefined> {
     const resumeId = crypto.randomUUID()

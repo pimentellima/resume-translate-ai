@@ -13,7 +13,7 @@ import { Progress } from '@/components/ui/progress'
 import { ArrowUpCircle, LoaderCircle } from 'lucide-react'
 import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import createDocument from './create-document'
+import createDocument from '../../create-document'
 
 type FormValues = {
     file: FileList
@@ -38,7 +38,7 @@ export function DialogTranslateResume() {
         const formData = new FormData()
         formData.set('file', data.file[0])
         formData.set('language', data.language)
-        const error = await createDocument(formData)
+        const error = await createDocument(undefined, formData)
         setProgress(0)
         if (error) {
             setError(error)
