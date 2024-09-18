@@ -37,7 +37,7 @@ function Header() {
 
 function Footer() {
     return (
-        <footer className="pt-10 mx-20 mt-32 border-t scroll-smooth">
+        <footer className="px-20 pt-10 border-t scroll-smooth">
             <div className="grid grid-cols-3 px-5">
                 <div className="flex flex-col gap-2 text-sm">
                     <p className="font-semibold ">Links</p>

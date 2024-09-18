@@ -41,7 +41,7 @@ export default function Home() {
 
 function FeaturesSection() {
     return (
-        <section id="features" className="w-full py-32">
+        <section id="features" className="w-full py-32 border-b">
             <div className="container px-4 mx-auto">
                 <div className="grid grid-cols-1 gap-8 mb-12 md:grid-cols-3">
                     <div className="flex flex-col items-center text-center">
@@ -96,7 +96,7 @@ function GetStartedSection() {
     return (
         <section
             id="get-started"
-            className="flex flex-col items-center justify-center py-24 bg-card text-card-foreground"
+            className="flex flex-col items-center justify-center py-24 my-20 bg-card text-card-foreground"
         >
             <h2 className="font-serif text-5xl">Get started</h2>
             <h3 className="mt-6">

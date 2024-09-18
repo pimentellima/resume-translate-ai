@@ -61,7 +61,7 @@ export default function PricingPage({
                 <div className="flex justify-center mt-3">
                     {isYearly && (
                         <span className="absolute inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-green-100 text-green-800">
-                            Save 16%
+                            Save 20%
                         </span>
                     )}
                 </div>
