@@ -7,9 +7,10 @@ export default async function Layout({
     children: React.ReactNode
 }>) {
     return (
-        <div className="flex flex-col min-h-screen">
+        <div className="flex flex-col min-h-screen pb-32 ">
             <Header />
             {children}
+            <Footer />
         </div>
     )
 }
@@ -31,5 +32,65 @@ function Header() {
                 </Button>
             </div>
         </header>
+    )
+}
+
+function Footer() {
+    return (
+        <footer className="pt-10 mx-20 mt-32 border-t scroll-smooth">
+            <div className="grid grid-cols-3 px-5">
+                <div className="flex flex-col gap-2 text-sm">
+                    <p className="font-semibold ">Links</p>
+                    <Link
+                        className="hover:underline underline-offset-4 w-max"
+                        href="/"
+                    >
+                        Home
+                    </Link>
+                    <Link
+                        className="hover:underline underline-offset-4 w-max"
+                        href="#get-started"
+                    >
+                        Get started
+                    </Link>
+                    <Link
+                        className="hover:underline underline-offset-4 w-max"
+                        href="#features"
+                    >
+                        Features
+                    </Link>
+                    <Link
+                        className="hover:underline underline-offset-4 w-max"
+                        href="/pricing"
+                    >
+                        Pricing
+                    </Link>
+                </div>
+                <div className="flex flex-col gap-2 text-sm">
+                    <p className="font-semibold ">Legal</p>
+                    <Link
+                        className="hover:underline underline-offset-4 w-max"
+                        href="/privacy-policy"
+                    >
+                        Privacy policy
+                    </Link>
+                    <Link
+                        className="hover:underline underline-offset-4 w-max"
+                        href="/tos"
+                    >
+                        Terms of service
+                    </Link>
+                </div>
+                <div className="flex flex-col gap-2 text-sm">
+                    <p className="font-semibold ">Sign</p>
+                    <Link
+                        className="hover:underline underline-offset-4 w-max"
+                        href="/sign-in"
+                    >
+                        Log in to your account
+                    </Link>
+                </div>
+            </div>
+        </footer>
     )
 }

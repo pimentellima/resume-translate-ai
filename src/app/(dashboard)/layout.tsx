@@ -38,7 +38,7 @@ async function Header() {
             <div className="flex">
                 {!!session?.user && (
                     <Button className="text-base" variant="link" asChild>
-                        <Link href={'/upgrade'} className="flex items-center">
+                        <Link href={'/pricing'} className="flex items-center">
                             <SparklesIcon className="w-5 h-5 mr-2 text-yellow-400 fill-yellow-400" />{' '}
                             Upgrade
                         </Link>

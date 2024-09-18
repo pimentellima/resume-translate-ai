@@ -7,7 +7,7 @@ import FormSubmitFile from './form-submit-file'
 
 export default function Home() {
     return (
-        <main className="flex-1 pb-32 scroll-smooth">
+        <main className="flex-1 scroll-smooth">
             <div className="px-64 pt-32 pb-20 text-left text-background bg-accent-foreground">
                 <h1 className="font-serif text-6xl">
                     Translate your resume to any language
@@ -35,7 +35,6 @@ export default function Home() {
             </div>
             <FeaturesSection />
             <GetStartedSection />
-            <Footer />
         </main>
     )
 }
@@ -110,62 +109,3 @@ function GetStartedSection() {
     )
 }
 
-function Footer() {
-    return (
-        <footer className="pt-10 mx-20 mt-32 border-t scroll-smooth">
-            <div className="grid grid-cols-3 px-5">
-                <div className="flex flex-col gap-2 text-sm">
-                    <p className="font-semibold ">Links</p>
-                    <Link
-                        className="hover:underline underline-offset-4 w-max"
-                        href="/"
-                    >
-                        Home
-                    </Link>
-                    <Link
-                        className="hover:underline underline-offset-4 w-max"
-                        href="#get-started"
-                    >
-                        Get started
-                    </Link>
-                    <Link
-                        className="hover:underline underline-offset-4 w-max"
-                        href="#features"
-                    >
-                        Features
-                    </Link>
-                    <Link
-                        className="hover:underline underline-offset-4 w-max"
-                        href="/pricing"
-                    >
-                        Pricing
-                    </Link>
-                </div>
-                <div className="flex flex-col gap-2 text-sm">
-                    <p className="font-semibold ">Legal</p>
-                    <Link
-                        className="hover:underline underline-offset-4 w-max"
-                        href="/privacy-policy"
-                    >
-                        Privacy policy
-                    </Link>
-                    <Link
-                        className="hover:underline underline-offset-4 w-max"
-                        href="/tos"
-                    >
-                        Terms of service
-                    </Link>
-                </div>
-                <div className="flex flex-col gap-2 text-sm">
-                    <p className="font-semibold ">Sign</p>
-                    <Link
-                        className="hover:underline underline-offset-4 w-max"
-                        href="/sign-in"
-                    >
-                        Log in to your account
-                    </Link>
-                </div>
-            </div>
-        </footer>
-    )
-}
