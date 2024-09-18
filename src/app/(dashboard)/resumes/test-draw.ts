@@ -1,6 +1,6 @@
 'use server'
 
-import generateResumePdf from '@/lib/draw-resume/generate-resume-pdf'
+import generateResumePdf from '@/lib/utils/draw-resume/generate-resume-pdf'
 import { promises } from 'fs'
 
 export async function testDraw() {

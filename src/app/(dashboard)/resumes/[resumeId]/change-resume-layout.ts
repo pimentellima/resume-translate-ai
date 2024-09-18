@@ -3,8 +3,8 @@
 import { db } from '@/drizzle/index'
 import { resumes } from '@/drizzle/schema'
 import s3 from '@/lib/aws-s3'
-import generateResumePdf from '@/lib/draw-resume/generate-resume-pdf'
-import { Resume } from '@/lib/generate-resume-object'
+import generateResumePdf from '@/lib/utils/draw-resume/generate-resume-pdf'
+import { Resume } from '@/lib/utils/generate-resume-object'
 import { eq, InferSelectModel } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 
