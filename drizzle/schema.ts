@@ -34,8 +34,6 @@ export const users = pgTable('users', {
     email: text('email'),
     stripeCustomerId: text('stripeCustomerId').unique(),
     stripeSubscriptionId: text('stripeSubscriptionId').unique(),
-    stripeProductId: text('stripeProductId'),
-    subscriptionStatus: text('subscriptionStatus'),
     createdAt: timestamp('createdAt').defaultNow(),
 })
 

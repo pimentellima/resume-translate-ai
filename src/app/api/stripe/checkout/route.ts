@@ -63,8 +63,6 @@ export async function GET(request: NextRequest) {
             .set({
                 stripeCustomerId: customerId,
                 stripeSubscriptionId: subscriptionId,
-                stripeProductId: productId,
-                subscriptionStatus: subscription.status,
             })
             .where(eq(users.id, userId))
 

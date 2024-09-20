@@ -1,11 +1,6 @@
 'use server'
 import { db } from '@/drizzle/index'
-import {
-    generations,
-    languageEnum,
-    resumes,
-    users
-} from '@/drizzle/schema'
+import { generations, languageEnum, resumes, users } from '@/drizzle/schema'
 import { auth } from '@/lib/auth'
 import s3 from '@/lib/aws-s3'
 import generateResumePdf from '@/lib/utils/draw-resume/generate-resume-pdf'
@@ -51,12 +46,6 @@ export default async function createDocument(
 
                 const subscription = await getUserSubscription(session.user.id)
                 if (!subscription) return 'Subscription not found'
-                /* const subscription = await db.query.subscriptions.findFirst({
-                    where: eq(
-                        subscriptions.stripeCustomerId,
-                        user.stripeCustomerId
-                    ),
-                }) */
                 if (subscription.status !== 'active') {
                     return 'Your subscription is not active'
                 }

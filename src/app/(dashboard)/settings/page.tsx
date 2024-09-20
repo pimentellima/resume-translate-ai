@@ -7,6 +7,7 @@ import { SparkleIcon, SparklesIcon } from 'lucide-react'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import Stripe from 'stripe'
+import { format } from 'date-fns'
 
 export default async function SettingsPage() {
     const session = await auth()
@@ -25,6 +26,7 @@ export default async function SettingsPage() {
         | Stripe.Product
         | undefined
 
+    console.log(subscription)
     return (
         <div className="grid grid-cols-[1fr,2fr] px-64 py-10">
             <h1 className="font-serif text-3xl">Settings</h1>
@@ -36,17 +38,43 @@ export default async function SettingsPage() {
                             <span className="ml-1 font-semibold">
                                 {product ? product.name : 'Free Plan'}
                             </span>
+                            {subscription?.status !== 'canceled' &&
+                            subscription?.cancel_at ? (
+                                <span className='ml-1'>{`(Cancels at ${format(
+                                    new Date(subscription.cancel_at * 1000),
+                                    'dd MMM yyyy'
+                                )})`}</span>
+                            ) : subscription?.status ? (
+                                <span className="ml-1">
+                                    ({subscription.status})
+                                </span>
+                            ) : null}
                         </CardTitle>
                     </CardHeader>
                     <CardContent>
-                        {product ? (
-                            <Button asChild>
-                                <Link
-                                    href={process.env.STRIPE_CLIENT_PORTAL_URL!}
+                        {subscription ? (
+                            <div className="flex flex-col gap-1">
+                                <Button
+                                    className="w-max"
+                                    asChild
+                                    variant={'outline'}
                                 >
-                                    Manage Subscription
-                                </Link>
-                            </Button>
+                                    <Link
+                                        target="_blank"
+                                        href={
+                                            process.env
+                                                .STRIPE_CLIENT_PORTAL_URL!
+                                        }
+                                    >
+                                        Billing
+                                    </Link>
+                                </Button>
+                                {subscription.status === 'canceled' && (
+                                    <Button className="w-max" asChild>
+                                        <Link href={'pricing'}>Renew Plan</Link>
+                                    </Button>
+                                )}
+                            </div>
                         ) : (
                             <div>
                                 <p className="inline-block w-full">
@@ -70,7 +98,7 @@ export default async function SettingsPage() {
                     <CardHeader>
                         <CardTitle>Danger zone</CardTitle>
                     </CardHeader>
-                    <CardContent className="flex flex-col gap-2">
+                    <CardContent className="flex flex-col gap-1">
                         <Button className="w-max" variant={'destructive'}>
                             Delete all documents
                         </Button>
