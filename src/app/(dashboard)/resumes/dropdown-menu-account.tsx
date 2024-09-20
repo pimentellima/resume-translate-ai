@@ -11,14 +11,18 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { CogIcon, LogOut, User } from 'lucide-react'
 import { signOut } from 'next-auth/react'
-import { useParams, usePathname } from 'next/navigation'
+import Link from 'next/link'
+import { useParams, usePathname, useRouter } from 'next/navigation'
+import { useState } from 'react'
 
 export default function DropdownMenuAccount() {
+    const [open, setOpen] = useState(false)
+    const router = useRouter()
     const params = useParams()
     const pathname = usePathname()
 
     return (
-        <DropdownMenu>
+        <DropdownMenu open={open} onOpenChange={(open) => setOpen(open)}>
             <DropdownMenuTrigger asChild>
                 <Button variant="outline">
                     <User className="w-4 h-4" />
@@ -26,8 +30,16 @@ export default function DropdownMenuAccount() {
             </DropdownMenuTrigger>
             <DropdownMenuContent className="bg-white w-36">
                 <DropdownMenuItem>
-                    <CogIcon className="w-4 h-4 mr-2" />
-                    Settings
+                    <button
+                        onClick={() => {
+                            router.push('/settings')
+                            setOpen(false)
+                        }}
+                        className="flex items-center"
+                    >
+                        <CogIcon className="w-4 h-4 mr-2" />
+                        Settings
+                    </button>
                 </DropdownMenuItem>
                 <DropdownMenuItem
                     onClick={() =>
