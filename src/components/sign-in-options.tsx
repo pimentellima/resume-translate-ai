@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { signIn } from 'next-auth/react'
 import { useSearchParams } from 'next/navigation'
 
-export default function SignInOptions({ redirectUri }: { redirectUri?: string }) {
+export default function SignInOptions({ callbackUrl }: { callbackUrl?: string }) {
     const params = useSearchParams()
     const error = params.get('error')
 
@@ -14,7 +14,7 @@ export default function SignInOptions({ redirectUri }: { redirectUri?: string })
         <div>
             <Button
                 size={'lg'}
-                onClick={() => signIn('google', { callbackUrl: redirectUri })}
+                onClick={() => signIn('google', { callbackUrl: callbackUrl })}
                 className="w-full mt-2"
             >
                 <GoogleIcon className="w-5 h-5 mr-2" />
@@ -22,7 +22,7 @@ export default function SignInOptions({ redirectUri }: { redirectUri?: string })
             </Button>
             <Button
                 size={'lg'}
-                onClick={() => signIn('github', { callbackUrl: redirectUri })}
+                onClick={() => signIn('github', { callbackUrl: callbackUrl })}
                 className="w-full mt-2"
             >
                 <GithubIcon className="w-5 h-5 mr-2" />

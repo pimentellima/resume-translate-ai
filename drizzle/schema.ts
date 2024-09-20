@@ -1,3 +1,4 @@
+import { stripe } from '@/lib/stripe'
 import { relations, sql } from 'drizzle-orm'
 import { integer, pgEnum, pgTable, text, timestamp } from 'drizzle-orm/pg-core'
 
@@ -31,7 +32,25 @@ export const users = pgTable('users', {
         .default(sql`gen_random_uuid()`)
         .primaryKey(),
     email: text('email'),
+    stripeCustomerId: text('stripeCustomerId').unique(),
+    stripeSubscriptionId: text('stripeSubscriptionId').unique(),
+    stripeProductId: text('stripeProductId'),
+    subscriptionStatus: text('subscriptionStatus'),
     createdAt: timestamp('createdAt').defaultNow(),
+})
+
+export const generations = pgTable('generations', {
+    id: text('id')
+        .notNull()
+        .default(sql`gen_random_uuid()`)
+        .primaryKey(),
+    userId: text('userId')
+        .references(() => users.id, { onDelete: 'cascade' })
+        .notNull(),
+    resumeId: text('resumeId').references(() => resumes.id, {
+        onDelete: 'set null',
+    }),
+    date: timestamp('date').defaultNow(),
 })
 
 export const resumes = pgTable('resumes', {

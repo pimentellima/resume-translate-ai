@@ -2,6 +2,8 @@ import { Check, X } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import SwitchIsYearly from './switch-is-yearly'
+import ButtonCheckout from './button-checkout'
+import Link from 'next/link'
 
 export default function PricingPage({
     searchParams,
@@ -20,7 +22,7 @@ export default function PricingPage({
             features: [
                 'Export to PDF',
                 'Translate to multiple languages',
-                'Translate up to 2 resumes per month',
+                'Translate up to 1 resume per month',
             ],
         },
         {
@@ -116,19 +118,23 @@ export default function PricingPage({
                                     ))}
                                 </ul>
                                 <div className="mt-8">
-                                    <Button
-                                        className="w-full text-base"
-                                        size="lg"
-                                        variant={
-                                            plan.name === 'Free'
-                                                ? 'outline'
-                                                : 'default'
-                                        }
-                                    >
-                                        {plan.name === 'Free'
-                                            ? 'Get started'
-                                            : 'Upgrade to Pro'}
-                                    </Button>
+                                    {plan.name === 'Free' ? (
+                                        <Button
+                                            className="w-full text-base"
+                                            size="lg"
+                                            variant={'outline'}
+                                        >
+                                            <Link href="/sign-in">
+                                                Get started
+                                            </Link>
+                                        </Button>
+                                    ) : (
+                                        <ButtonCheckout
+                                            plan={
+                                                isYearly ? 'yearly' : 'monthly'
+                                            }
+                                        />
+                                    )}
                                 </div>
                             </div>
                         </div>

@@ -9,15 +9,13 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { LogIn, LogOut, User } from 'lucide-react'
-import { signOut, useSession } from 'next-auth/react'
-import Link from 'next/link'
-import { useParams, usePathname, useSearchParams } from 'next/navigation'
+import { CogIcon, LogOut, User } from 'lucide-react'
+import { signOut } from 'next-auth/react'
+import { useParams, usePathname } from 'next/navigation'
 
 export default function DropdownMenuAccount() {
-    const session = useSession()
-    const pathname = usePathname()
     const params = useParams()
+    const pathname = usePathname()
 
     return (
         <DropdownMenu>
@@ -26,36 +24,21 @@ export default function DropdownMenuAccount() {
                     <User className="w-4 h-4" />
                 </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuGroup>
-                    {session?.data?.user ? (
-                        <DropdownMenuItem
-                            onClick={() =>
-                                signOut({
-                                    callbackUrl: params.resumeId
-                                        ? pathname
-                                        : undefined,
-                                })
-                            }
-                        >
-                            <LogOut className="w-4 h-4 mr-2" />
-                            Sign out
-                        </DropdownMenuItem>
-                    ) : (
-                        <DropdownMenuItem>
-                            <Link
-                                href={`/sign-in?redirect_uri=${process.env.NEXT_PUBLIC_URL}/resumes/${params.resumeId}`}
-                                className="flex items-center"
-                            >
-                                <LogIn className="w-4 h-4 mr-2" />
-                                Sign in
-                            </Link>
-                        </DropdownMenuItem>
-                    )}
-                </DropdownMenuGroup>
-                <DropdownMenuSeparator />
+            <DropdownMenuContent className="bg-white w-36">
+                <DropdownMenuItem>
+                    <CogIcon className="w-4 h-4 mr-2" />
+                    Settings
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                    onClick={() =>
+                        signOut({
+                            callbackUrl: params.resumeId ? pathname : undefined,
+                        })
+                    }
+                >
+                    <LogOut className="w-4 h-4 mr-2" />
+                    Sign out
+                </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
     )

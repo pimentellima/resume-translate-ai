@@ -39,7 +39,11 @@ export default function EditResume({
                         selectedLanguage={language}
                     />
                 </div>
-                <ButtonDownloadFile label='Download' size={'lg'} signedUrl={pdfUrl} />
+                <ButtonDownloadFile
+                    label="Download"
+                    size={'lg'}
+                    resumeId={resumeId}
+                />
             </div>
             <PdfVisualizer url={pdfUrl} loading={loading} />
         </div>

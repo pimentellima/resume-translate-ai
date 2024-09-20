@@ -1,36 +1,27 @@
 'use client'
 
 import { Button, ButtonProps } from '@/components/ui/button'
-import { ArrowDown, ArrowDownCircle } from 'lucide-react'
-import { useSession } from 'next-auth/react'
-import { useParams, useRouter } from 'next/navigation'
+import { ArrowDownCircle } from 'lucide-react'
 
 export default function ButtonDownloadFile({
-    signedUrl,
+    resumeId,
     label,
     ...props
 }: Omit<ButtonProps, 'onClick'> & {
-    signedUrl: string
+    resumeId: string
     label?: string
 }) {
-    const session = useSession()
-    const router = useRouter()
-    const params = useParams()
-
     const handleDownload = async () => {
-        if (!session?.data?.user) {
-            router.push(
-                `/sign-in?redirect_uri=${process.env.NEXT_PUBLIC_URL}/resumes/${params.resumeId}`
-            )
-            return
-        }
         try {
-            const response = await fetch(signedUrl, {
+            const response = await fetch(`api/file/${resumeId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/pdf',
                 },
             })
+            if (!response.ok) {
+                return
+            }
             const blob = await response.blob()
             const url = URL.createObjectURL(blob)
             const link = document.createElement('a')
@@ -47,7 +38,7 @@ export default function ButtonDownloadFile({
     return (
         <Button {...props} onClick={handleDownload}>
             <ArrowDownCircle className="w-4 h-4" />
-            {label && <span className='ml-1'>{label}</span>}
+            {label && <span className="ml-1">{label}</span>}
         </Button>
     )
 }

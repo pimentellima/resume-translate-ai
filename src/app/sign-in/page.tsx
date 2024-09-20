@@ -15,7 +15,6 @@ export default async function SignInPage({
     searchParams: { [key: string]: string }
 }) {
     const session = await auth()
-    const redirectUri = searchParams.redirect_uri
 
     if (session?.user) {
         redirect('/resumes')
@@ -25,17 +24,25 @@ export default async function SignInPage({
         <div className="flex items-center justify-center h-screen px-3 bg-background md:px-0">
             <Card className="w-[400px]">
                 <CardHeader>
-                    <CardTitle className="text-2xl">
-                        Sign in to download resume
-                    </CardTitle>
+                    <CardTitle className="text-2xl">Sign in</CardTitle>
                     <CardDescription>
-                        {redirectUri
-                            ? 'You will be redirected to the download page'
+                        {searchParams.redirect === 'resumes'
+                            ? 'You will be redirected back to the resume page'
+                            : searchParams.redirect === 'pricing'
+                            ? 'You will be redirected back to the pricing page'
                             : 'Sign in to your account'}
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <SignInOptions redirectUri={redirectUri} />
+                    <SignInOptions
+                        callbackUrl={
+                            searchParams.redirect === 'resumes'
+                                ? `${process.env.NEXT_PUBLIC_URL}/resumes/${searchParams.resumeId}`
+                                : searchParams.redirect === 'pricing'
+                                ? `${process.env.NEXT_PUBLIC_URL}/pricing`
+                                : undefined
+                        }
+                    />
                 </CardContent>
             </Card>
         </div>
