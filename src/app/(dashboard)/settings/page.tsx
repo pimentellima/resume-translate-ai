@@ -41,7 +41,11 @@ export default async function SettingsPage() {
                     <CardContent>
                         {product ? (
                             <Button asChild>
-                                <Link href={''}>Manage Subscription</Link>
+                                <Link
+                                    href={process.env.STRIPE_CLIENT_PORTAL_URL!}
+                                >
+                                    Manage Subscription
+                                </Link>
                             </Button>
                         ) : (
                             <div>
@@ -67,10 +71,10 @@ export default async function SettingsPage() {
                         <CardTitle>Danger zone</CardTitle>
                     </CardHeader>
                     <CardContent className="flex flex-col gap-2">
-                        <Button className='w-max' variant={'destructive'}>
+                        <Button className="w-max" variant={'destructive'}>
                             Delete all documents
                         </Button>
-                        <Button className='w-max' variant={'destructive'}>
+                        <Button className="w-max" variant={'destructive'}>
                             Delete account
                         </Button>
                     </CardContent>
