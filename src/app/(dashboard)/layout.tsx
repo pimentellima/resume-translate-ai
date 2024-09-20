@@ -27,7 +27,7 @@ async function Header() {
         : null
 
     return (
-        <header className="sticky top-0 z-10 flex items-center justify-between w-full px-4 py-2 h-14 bg-card text-card-foreground sm:px-8 md:px-12">
+        <header className="sticky top-0 z-10 flex items-center justify-between w-full px-4 py-2 border-b h-14 bg-card text-card-foreground sm:px-8 md:px-12">
             {!!session?.user ? (
                 <Button className="text-base" variant="link" asChild>
                     <Link href={'/resumes'}>Resumes</Link>
