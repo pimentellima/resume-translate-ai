@@ -4,17 +4,25 @@ import GithubIcon from '@/components/github-icon'
 import GoogleIcon from '@/components/google-icon'
 import { Button } from '@/components/ui/button'
 import { signIn } from 'next-auth/react'
-import { useSearchParams } from 'next/navigation'
+import { usePathname, useSearchParams } from 'next/navigation'
 
-export default function SignInOptions({ callbackUrl }: { callbackUrl?: string }) {
-    const params = useSearchParams()
-    const error = params.get('error')
+export default function SignInOptions() {
+    const searchParams = useSearchParams()
+    const pathname = usePathname()
+    const redirect = searchParams.get('redirect')
+    const error = searchParams.get('error')
+    const callbackUrl =
+        redirect === 'resumes'
+            ? `${pathname}/resumes/${searchParams.get('resumeId')}`
+            : redirect === 'pricing'
+            ? `${pathname}/pricing`
+            : undefined
 
     return (
         <div>
             <Button
                 size={'lg'}
-                onClick={() => signIn('google', { callbackUrl: callbackUrl })}
+                onClick={() => signIn('google', { callbackUrl })}
                 className="w-full mt-2"
             >
                 <GoogleIcon className="w-5 h-5 mr-2" />
@@ -22,7 +30,7 @@ export default function SignInOptions({ callbackUrl }: { callbackUrl?: string })
             </Button>
             <Button
                 size={'lg'}
-                onClick={() => signIn('github', { callbackUrl: callbackUrl })}
+                onClick={() => signIn('github', { callbackUrl })}
                 className="w-full mt-2"
             >
                 <GithubIcon className="w-5 h-5 mr-2" />

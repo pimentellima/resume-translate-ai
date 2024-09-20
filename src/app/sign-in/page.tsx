@@ -34,15 +34,7 @@ export default async function SignInPage({
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <SignInOptions
-                        callbackUrl={
-                            searchParams.redirect === 'resumes'
-                                ? `${process.env.NEXT_PUBLIC_URL}/resumes/${searchParams.resumeId}`
-                                : searchParams.redirect === 'pricing'
-                                ? `${process.env.NEXT_PUBLIC_URL}/pricing`
-                                : undefined
-                        }
-                    />
+                    <SignInOptions />
                 </CardContent>
             </Card>
         </div>
