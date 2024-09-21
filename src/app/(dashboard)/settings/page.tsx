@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { auth } from '@/lib/auth'
 import { stripe } from '@/lib/stripe'
 import { getUserById } from '@/services/user'
-import { SparkleIcon, SparklesIcon } from 'lucide-react'
+import { ExternalLink, SparkleIcon, SparklesIcon } from 'lucide-react'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import Stripe from 'stripe'
@@ -61,12 +61,14 @@ export default async function SettingsPage() {
                                 >
                                     <Link
                                         target="_blank"
+                                        className='flex items-center'
                                         href={
                                             process.env
                                                 .STRIPE_CLIENT_PORTAL_URL!
                                         }
                                     >
                                         Billing
+                                        <ExternalLink className='h-4 ml-1'/>
                                     </Link>
                                 </Button>
                                 {subscription.status === 'canceled' && (
