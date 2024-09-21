@@ -2,6 +2,7 @@
 
 import { createCheckoutSession } from '@/app/actions/create-checkout-session'
 import { Button } from '@/components/ui/button'
+import { useToast } from '@/components/ui/use-toast'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 
@@ -12,6 +13,7 @@ export default function ButtonCheckout({
 }) {
     const session = useSession()
     const router = useRouter()
+    const { toast } = useToast()
 
     return (
         <Button
@@ -21,8 +23,11 @@ export default function ButtonCheckout({
                 }
                 const error = await createCheckoutSession(plan)
                 if (error) {
-                    console.log(error)
-                    // toast
+                    toast({
+                        title: 'Failed to create checkout session',
+                        variant: 'destructive',
+                    })
+                    return
                 }
             }}
             className="w-full text-base"
