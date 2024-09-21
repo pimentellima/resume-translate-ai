@@ -5,6 +5,7 @@ import { InferInsertModel, InferSelectModel } from 'drizzle-orm'
 import { usePathname, useRouter } from 'next/navigation'
 import { changeResumeLanguage } from './change-resume-language'
 import { ButtonProps } from '@/components/ui/button'
+import { useToast } from '@/components/ui/use-toast'
 
 export default function SelectResumeLanguage({
     resumeId,
@@ -15,6 +16,7 @@ export default function SelectResumeLanguage({
     selectedLanguage: InferSelectModel<typeof resumes>['language']
     setLoading: (loading: boolean) => void
 }) {
+    const { toast } = useToast()
     return (
         <SelectLanguage
             size={'lg'}
@@ -26,7 +28,10 @@ export default function SelectResumeLanguage({
                     language as InferInsertModel<typeof resumes>['language']
                 )
                 if (error) {
-                    //
+                    toast({
+                        title: 'Failed to change language',
+                        variant: 'destructive',
+                    })
                     return
                 }
                 setLoading(false)

@@ -11,6 +11,7 @@ import { useState } from 'react'
 import { z } from 'zod'
 import { changeResumeLayout } from './change-resume-layout'
 import { InferSelectModel } from 'drizzle-orm'
+import { toast, useToast } from '@/components/ui/use-toast'
 
 const layoutThumbnail = {
     metro: 'https://via.placeholder.com/150',
@@ -28,6 +29,7 @@ export default function PopoverChangeLayout({
 }) {
     const [open, setOpen] = useState(false)
     const layouts = Object.values(z.enum(layoutEnum.enumValues).Values)
+    const { toast } = useToast()
 
     return (
         <Popover open={open} onOpenChange={(open) => setOpen(open)}>
@@ -53,7 +55,10 @@ export default function PopoverChangeLayout({
                                 layout
                             )
                             if (error) {
-                                //
+                                toast({
+                                    title: 'Failed to change layout',
+                                    variant: 'destructive',
+                                })
                                 return
                             }
                             setLoading(false)
