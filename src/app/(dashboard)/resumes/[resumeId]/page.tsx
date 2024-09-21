@@ -14,17 +14,7 @@ export default async function ViewResumePage({
 }: {
     params: { resumeId: string }
 }) {
-    const session = await auth()
     const resume = await getResumeById(params.resumeId)
-    const isUserOwner = session?.user?.id === resume?.userId
-
-    if (resume?.userId && !isUserOwner) {
-        redirect('/sign-in')
-    }
-
-    if (resume && session?.user && !resume.userId) {
-        await updateResumeUser(resume.id, session.user.id)
-    }
 
     if (!resume)
         return (

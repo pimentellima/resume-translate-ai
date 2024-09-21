@@ -6,6 +6,8 @@ import { DialogTranslateResume } from './dialog-translate-resume'
 import ResumeItem from './resume-item'
 import { getResumesByUserId } from '@/services/resumes'
 import Link from 'next/link'
+import ErrorToast from './error-toast'
+import { ToastAction } from '@/components/ui/toast'
 
 export default async function ResumesPage({
     searchParams,
@@ -17,12 +19,28 @@ export default async function ResumesPage({
         return redirect('/sign-in')
     }
     const page = searchParams?.page ? Number(searchParams.page) : 1
+    const error = searchParams?.error
 
-    const { userResumes: resumes, count } =
-        await getResumesByUserId(session.user.id, page)
+    const { userResumes: resumes, count } = await getResumesByUserId(
+        session.user.id,
+        page
+    )
 
     return (
         <div className="px-64 py-10 ">
+            {error && (
+                <ErrorToast
+                    action={
+                        <ToastAction asChild altText="Go to plan settings">
+                            <Link href={'/settings'}>Manage plan</Link>
+                        </ToastAction>
+                    }
+                    title="An error occured"
+                    description={
+                        'You have reached the limit of 1 resume per month'
+                    }
+                />
+            )}
             <h1 className="font-serif text-3xl">Resumes</h1>
             {count === 0 ? (
                 <div className="flex justify-center items-center flex-col absolute top-1/2 -translate-y-[50%] translate-x-[50%] right-1/2">

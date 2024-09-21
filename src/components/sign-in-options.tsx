@@ -11,12 +11,13 @@ export default function SignInOptions() {
     const pathname = usePathname()
     const redirect = searchParams.get('redirect')
     const error = searchParams.get('error')
-    const callbackUrl =
-        redirect === 'resumes'
-            ? `${pathname}/resumes/${searchParams.get('resumeId')}`
-            : redirect === 'pricing'
-            ? `${pathname}/pricing`
-            : undefined
+    let callbackUrl: undefined | string = undefined
+    if (redirect === 'pricing') callbackUrl = `${pathname}/pricing`
+    if (redirect === 'resumes')
+        callbackUrl =
+            process.env.NEXT_PUBLIC_URL +
+            '/api/resumes/' +
+            searchParams.get('resumeId')
 
     return (
         <div>

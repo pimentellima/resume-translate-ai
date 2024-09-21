@@ -21,6 +21,7 @@ export async function getResumesByUserId(userId: string, page = 1) {
             count: count(),
         })
         .from(resumes)
+        .where(eq(resumes.userId, userId))
 
     return { userResumes, count: countRows[0].count }
 }

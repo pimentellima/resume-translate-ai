@@ -40,12 +40,17 @@ export default function EditResume({
                     />
                 </div>
                 <ButtonDownloadFile
+                    fileUrl={pdfUrl}
+                    disabled={!language}
                     label="Download"
                     size={'lg'}
-                    resumeId={resumeId}
                 />
             </div>
-            <PdfVisualizer url={pdfUrl} loading={loading} />
+            <PdfVisualizer
+                translated={!!language}
+                url={pdfUrl}
+                loading={loading}
+            />
         </div>
     )
 }

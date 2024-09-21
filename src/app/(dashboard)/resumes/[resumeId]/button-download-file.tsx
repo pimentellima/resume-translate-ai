@@ -1,27 +1,32 @@
 'use client'
 
 import { Button, ButtonProps } from '@/components/ui/button'
+import { useToast } from '@/components/ui/use-toast'
 import { ArrowDownCircle } from 'lucide-react'
 
 export default function ButtonDownloadFile({
-    resumeId,
     label,
+    fileUrl,
     ...props
 }: Omit<ButtonProps, 'onClick'> & {
-    resumeId: string
+    fileUrl: string
     label?: string
 }) {
+    const { toast } = useToast()
+
     const handleDownload = async () => {
         try {
-            const response = await fetch(`api/file/${resumeId}`, {
+            const response = await fetch(fileUrl, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/pdf',
                 },
             })
-            if (!response.ok) {
-                return
-            }
+            if (!response.ok)
+                return toast({
+                    title: 'Failed to download file',
+                    variant: 'destructive',
+                })
             const blob = await response.blob()
             const url = URL.createObjectURL(blob)
             const link = document.createElement('a')
