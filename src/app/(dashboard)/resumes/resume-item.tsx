@@ -13,14 +13,14 @@ export default async function ResumeItem({
 }: {
     resume: InferSelectModel<typeof resumes>
 }) {
-    const signedUrl = await getSignedUrlFromS3Key(resume.key as string)
+    const fileUrl = await getSignedUrlFromS3Key(resume.key as string)
 
     const language = languages.find(
         (l) => l.value === resume.language
     )?.label
 
     return (
-        <div className="rounded-md p-3 bg-card grid grid-cols-[2fr,4fr] gap-3">
+        <div className="rounded-md p-3 bg-card grid grid-cols-[2fr,4fr] gap-3 text-sm md:text-base ">
             <div className="grid grid-cols-[20px,1fr] gap-2 items-center">
                 <File className="inline w-6 h-6" />
                 <Link
@@ -31,16 +31,16 @@ export default async function ResumeItem({
                 </Link>
             </div>
             <div className="grid grid-cols-[6fr,10fr,10fr,1fr] items-center justify-items-start">
-                <span>{(resume.fileSize * 0.001).toFixed(2)} KB</span>
-                <span className="text-nowrap">{language}</span>
-                <span className="text-nowrap">
+                <span className='hidden md:block'>{(resume.fileSize * 0.001).toFixed(2)} KB</span>
+                <span className="col-span-3 md:col-span-1 text-nowrap">{language}</span>
+                <span className="hidden md:block text-nowrap">
                     {resume.createdAt &&
                         formatDistanceToNow(new Date(resume.createdAt), {
                             addSuffix: true,
                         })}
                 </span>
                 <div className='flex gap-1'>
-                    <ButtonDownloadFile size={'icon'} title='Download' variant={'secondary'} signedUrl={signedUrl} />
+                    <ButtonDownloadFile size={'icon'} title='Download' variant={'secondary'} fileUrl={fileUrl} />
                     <ButtonDeleteResume resumeId={resume.id} />
                 </div>
             </div>

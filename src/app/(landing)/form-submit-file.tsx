@@ -35,12 +35,12 @@ function SelectFileButton() {
     const { pending } = useFormStatus()
 
     return pending ? (
-        <Button className="text-base" size={'lg'} type="button">
+        <Button className="w-full text-base" size={'lg'} type="button">
             <LoaderCircle className="w-4 h-4 mr-2 duration-1000 animate-spin" />
             Loading document...
         </Button>
     ) : (
-        <Button asChild size={'lg'} className="text-base" type="button">
+        <Button asChild size={'lg'} className="w-full text-base" type="button">
             <label htmlFor="file">
                 <FileIcon className="w-5 h-5 mr-2" />
                 Select file

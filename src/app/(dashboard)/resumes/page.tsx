@@ -1,6 +1,6 @@
 import { auth } from '@/lib/auth'
 import { getUserById } from '@/services/user'
-import { ArrowRight, ChevronLeft, ChevronRight, File } from 'lucide-react'
+import { ChevronLeft, ChevronRight, File } from 'lucide-react'
 import { redirect } from 'next/navigation'
 import { DialogTranslateResume } from './dialog-translate-resume'
 import ResumeItem from './resume-item'
@@ -27,7 +27,7 @@ export default async function ResumesPage({
     )
 
     return (
-        <div className="px-64 py-10 ">
+        <div className="px-4 py-10 sm:px-8 md:px-16 lg:px-32 xl:px-64">
             {error && (
                 <ErrorToast
                     action={
@@ -35,13 +35,13 @@ export default async function ResumesPage({
                             <Link href={'/settings'}>Manage plan</Link>
                         </ToastAction>
                     }
-                    title="An error occured"
+                    title="An error occurred"
                     description={
                         'You have reached the limit of 1 resume per month'
                     }
                 />
             )}
-            <h1 className="font-serif text-3xl">Resumes</h1>
+            <h1 className="mb-6 font-serif text-2xl md:text-3xl">Resumes</h1>
             {count === 0 ? (
                 <div className="flex justify-center items-center flex-col absolute top-1/2 -translate-y-[50%] translate-x-[50%] right-1/2">
                     <File className="h-11 w-11" />

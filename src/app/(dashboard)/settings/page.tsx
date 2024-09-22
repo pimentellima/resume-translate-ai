@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { auth } from '@/lib/auth'
 import { stripe } from '@/lib/stripe'
 import { getUserById } from '@/services/user'
-import { ExternalLink, SparkleIcon, SparklesIcon } from 'lucide-react'
+import { ExternalLink, SparklesIcon } from 'lucide-react'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import Stripe from 'stripe'
@@ -26,14 +26,13 @@ export default async function SettingsPage() {
         | Stripe.Product
         | undefined
 
-    console.log(subscription)
     return (
-        <div className="grid grid-cols-[1fr,2fr] px-64 py-10">
-            <h1 className="font-serif text-3xl">Settings</h1>
-            <div className="flex flex-col gap-2">
+        <div className="grid grid-cols-1 md:grid-cols-[1fr,2fr] px-4 sm:px-8 md:px-16 lg:px-32 xl:px-64 py-10">
+            <h1 className="mb-6 font-serif text-2xl md:text-3xl">Settings</h1>
+            <div className="flex flex-col gap-6">
                 <Card>
                     <CardHeader>
-                        <CardTitle className="font-normal">
+                        <CardTitle className="text-lg font-normal">
                             Your plan:
                             <span className="ml-1 font-semibold">
                                 {product ? product.name : 'Free Plan'}
@@ -53,9 +52,9 @@ export default async function SettingsPage() {
                     </CardHeader>
                     <CardContent>
                         {subscription ? (
-                            <div className="flex flex-col gap-1">
+                            <div className="flex flex-col gap-2">
                                 <Button
-                                    className="w-max"
+                                    className="w-full md:w-max"
                                     asChild
                                     variant={'outline'}
                                 >
@@ -72,7 +71,7 @@ export default async function SettingsPage() {
                                     </Link>
                                 </Button>
                                 {subscription.status === 'canceled' && (
-                                    <Button className="w-max" asChild>
+                                    <Button className="w-full md:w-max" asChild>
                                         <Link href={'pricing'}>Renew Plan</Link>
                                     </Button>
                                 )}
@@ -83,7 +82,7 @@ export default async function SettingsPage() {
                                     You can translate one resume per month with
                                     the free plan.
                                 </p>
-                                <Button className="mt-2" asChild>
+                                <Button className="w-full mt-2 md:w-max" asChild>
                                     <Link
                                         href={'/pricing'}
                                         className="flex items-center"
@@ -98,13 +97,13 @@ export default async function SettingsPage() {
                 </Card>
                 <Card>
                     <CardHeader>
-                        <CardTitle>Danger zone</CardTitle>
+                        <CardTitle className="text-lg">Danger zone</CardTitle>
                     </CardHeader>
-                    <CardContent className="flex flex-col gap-1">
-                        <Button className="w-max" variant={'destructive'}>
+                    <CardContent className="flex flex-col gap-2">
+                        <Button className="w-full md:w-max" variant={'destructive'}>
                             Delete all documents
                         </Button>
-                        <Button className="w-max" variant={'destructive'}>
+                        <Button className="w-full md:w-max" variant={'destructive'}>
                             Delete account
                         </Button>
                     </CardContent>

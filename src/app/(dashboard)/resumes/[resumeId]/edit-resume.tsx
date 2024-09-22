@@ -8,7 +8,6 @@ import ButtonDownloadFile from './button-download-file'
 import PdfVisualizer from './pdf-visualizer'
 import SelectResumeLanguage from './select-resume-language'
 import { useSession } from 'next-auth/react'
-import { testDraw } from '../test-draw'
 
 export default function EditResume({
     language,
@@ -24,7 +23,7 @@ export default function EditResume({
 
     return (
         <div className="w-[700px]">
-            <div className="flex justify-between">
+            <div className="flex flex-col justify-between gap-1 px-16 md:flex-row md:px-0">
                 {session?.data?.user && (
                     <Button size={'lg'} asChild variant={'outline'}>
                         <Link href={'/resumes'}>

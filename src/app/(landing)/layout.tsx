@@ -17,7 +17,7 @@ export default async function Layout({
 
 function Header() {
     return (
-        <header className="sticky top-0 z-10 flex items-center justify-between w-full px-4 py-2 border-b h-14 bg-background text-foreground sm:px-8 md:px-12">
+        <header className="z-10 flex items-center justify-between w-full px-4 py-2 border-b h-14 bg-background text-foreground sm:px-8 md:px-12">
             <Button className="text-base" variant="link">
                 <Link className="flex items-center" href={'/'}>
                     Home
@@ -37,7 +37,7 @@ function Header() {
 
 function Footer() {
     return (
-        <footer className="px-20 pt-10 border-t scroll-smooth">
+        <footer className="px-3 pt-10 border-t md:px-20 scroll-smooth">
             <div className="grid grid-cols-3 px-5">
                 <div className="flex flex-col gap-2 text-sm">
                     <p className="font-semibold ">Links</p>
