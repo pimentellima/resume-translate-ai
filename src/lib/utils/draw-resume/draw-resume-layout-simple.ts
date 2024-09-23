@@ -2,7 +2,9 @@ import { PDFDocument, rgb, StandardFonts } from 'pdf-lib'
 import { Resume } from '../generate-resume-object'
 import wrapText from '../wrap-text'
 
-export async function drawResumeLayoutSimple(resume: Resume): Promise<Uint8Array> {
+export async function drawResumeLayoutSimple(
+    resume: Resume
+): Promise<Uint8Array> {
     // Create a new PDF document
     const pdfDoc = await PDFDocument.create()
     const page = pdfDoc.addPage([600, 850])
@@ -60,27 +62,33 @@ export async function drawResumeLayoutSimple(resume: Resume): Promise<Uint8Array
     }
 
     // Summary
-    yPosition -= 40
-    page.drawText(resume.summarySection.sectionTitle, {
-        x: marginLeft,
-        y: yPosition,
-        size: fontSizeSectionTitle,
-        font: helveticaBold,
-        color: blueColor,
-    })
-
-    yPosition -= 20
-    const summaryText = wrapText(resume.summarySection.text, 500, fontSizeText)
-    summaryText.forEach((line) => {
-        page.drawText(line, {
+    if (resume.summarySection) {
+        yPosition -= 40
+        page.drawText(resume.summarySection.sectionTitle, {
             x: marginLeft,
             y: yPosition,
-            size: fontSizeText,
-            font: helvetica,
-            color: blackColor,
+            size: fontSizeSectionTitle,
+            font: helveticaBold,
+            color: blueColor,
         })
-        yPosition -= 15
-    })
+
+        yPosition -= 20
+        const summaryText = wrapText(
+            resume.summarySection.text,
+            500,
+            fontSizeText
+        )
+        summaryText.forEach((line) => {
+            page.drawText(line, {
+                x: marginLeft,
+                y: yPosition,
+                size: fontSizeText,
+                font: helvetica,
+                color: blackColor,
+            })
+            yPosition -= 15
+        })
+    }
 
     yPosition -= 20
     page.drawText(resume.experienceSection.sectionTitle, {
@@ -121,24 +129,26 @@ export async function drawResumeLayoutSimple(resume: Resume): Promise<Uint8Array
             })
         }
 
-        yPosition -= 20
-        exp.contributions.forEach((contribution) => {
-            const wrappedContributions = wrapText(
-                contribution,
-                500,
-                fontSizeText
-            )
-            wrappedContributions.forEach((line, index) => {
-                page.drawText(index === 0 ? `• ${line}` : line, {
-                    x: marginLeft + 5,
-                    y: yPosition,
-                    size: fontSizeText,
-                    font: helvetica,
-                    color: grayColor,
+        if (exp.contributions) {
+            yPosition -= 20
+            exp.contributions.forEach((contribution) => {
+                const wrappedContributions = wrapText(
+                    contribution,
+                    500,
+                    fontSizeText
+                )
+                wrappedContributions.forEach((line, index) => {
+                    page.drawText(index === 0 ? `• ${line}` : line, {
+                        x: marginLeft + 5,
+                        y: yPosition,
+                        size: fontSizeText,
+                        font: helvetica,
+                        color: grayColor,
+                    })
+                    yPosition -= 15
                 })
-                yPosition -= 15
             })
-        })
+        }
     })
 
     if (resume.projectsSection) {
