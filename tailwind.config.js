@@ -60,7 +60,7 @@ module.exports = {
             keyframes: {
                 'infinite-scroll': {
                     from: { transform: 'translateX(0)' },
-                    to: { transform: 'translateX(-50%)' },
+                    to: { transform: 'translateX(-2840px)' },
                 },
                 'accordion-down': {
                     from: { height: '0' },
@@ -72,7 +72,7 @@ module.exports = {
                 },
             },
             animation: {
-                'infinite-scroll': 'infinite-scroll 15s linear infinite',
+                'infinite-scroll': 'infinite-scroll 20s linear infinite',
                 'accordion-down': 'accordion-down 0.2s ease-out',
                 'accordion-up': 'accordion-up 0.2s ease-out',
             },
