@@ -10,6 +10,7 @@ export async function drawResumeLayoutMetro(
     // Create a new PDF document
     const pdfDoc = await PDFDocument.create()
     pdfDoc.registerFontkit(fontkit)
+    console.log(process.cwd() + '/public/fonts/Poppins/Poppins-Medium.ttf')
     const poppinsLightBytes = await promises.readFile(
         process.cwd() + '/public/fonts/Poppins/Poppins-Light.ttf'
     )
