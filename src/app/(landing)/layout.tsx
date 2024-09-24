@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button'
 import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import MobileNav from './mobile-nav'
+import Image from 'next/image'
 
 export default async function Layout({
     children,
@@ -20,11 +21,15 @@ export default async function Layout({
 function Header() {
     return (
         <header className="flex items-center justify-between w-full h-16 px-4 font-medium bg-white border-b sm:px-8 md:px-12">
-            <Link
-                className="flex items-center hover:underline underline-offset-4"
-                href={'/'}
-            >
-                Home
+            <Link href={'/'} className="flex items-center gap-2">
+                <Image
+                    className=""
+                    alt="logo"
+                    src="/logo-dark.png"
+                    width={35}
+                    height={35}
+                />
+                <span className="font-sans">Resume Translate</span>
             </Link>
             <div className="z-50 hidden gap-7 md:flex">
                 <Link
