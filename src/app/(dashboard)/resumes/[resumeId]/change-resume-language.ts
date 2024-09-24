@@ -5,7 +5,10 @@ import { resumes } from '@/drizzle/schema'
 import s3 from '@/lib/aws-s3'
 import generateResumePdf from '@/lib/utils/draw-resume/generate-resume-pdf'
 import { extractTextFromPdf } from '@/lib/utils/extract-text-from-pdf'
-import { generateResumeObject, Resume } from '@/lib/utils/generate-resume-object'
+import {
+    generateResumeObject,
+    Resume,
+} from '@/lib/utils/generate-resume-object'
 import { getFileFromS3 } from '@/services/s3'
 import { eq, InferInsertModel, InferSelectModel } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
@@ -43,8 +46,9 @@ export async function changeResumeLanguage(
                     : resume.name.replace('.pdf', '') + '-' + language + '.pdf',
             })
             .where(eq(resumes.id, resumeId))
-    } catch {
-        return 'An error occurred'
+    } catch (e) {
+        console.log(e)
+        return 'Internal error'
     }
     revalidatePath(`/resumes/${resumeId}`)
 }

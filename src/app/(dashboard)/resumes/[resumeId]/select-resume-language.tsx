@@ -29,7 +29,7 @@ export default function SelectResumeLanguage({
                 )
                 if (error) {
                     toast({
-                        title: 'Failed to change language',
+                        title: error,
                         variant: 'destructive',
                     })
                     return
