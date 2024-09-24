@@ -1,5 +1,7 @@
 import { Button } from '@/components/ui/button'
+import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
+import MobileNav from './mobile-nav'
 
 export default async function Layout({
     children,
@@ -7,7 +9,7 @@ export default async function Layout({
     children: React.ReactNode
 }>) {
     return (
-        <div className="flex flex-col min-h-screen pb-32 ">
+        <div className="flex flex-col min-h-screen pb-28 ">
             <Header />
             {children}
             <Footer />
@@ -17,19 +19,30 @@ export default async function Layout({
 
 function Header() {
     return (
-        <header className="z-10 flex items-center justify-between w-full px-4 py-2 border-b h-14 bg-background text-foreground sm:px-8 md:px-12">
-            <Button className="text-base" variant="link">
-                <Link className="flex items-center" href={'/'}>
-                    Home
+        <header className="flex items-center justify-between w-full h-16 px-4 font-medium bg-white border-b sm:px-8 md:px-12">
+            <Link
+                className="flex items-center hover:underline underline-offset-4"
+                href={'/'}
+            >
+                Home
+            </Link>
+            <div className="z-50 hidden gap-7 md:flex">
+                <Link
+                    className="hover:underline underline-offset-4"
+                    href={'/pricing'}
+                >
+                    Pricing
                 </Link>
-            </Button>
-            <div className="flex gap-2">
-                <Button className="text-base" variant="link">
-                    <Link href={'/pricing'}>Pricing</Link>
-                </Button>
-                <Button className="text-base" variant="link">
-                    <Link href={'/sign-in'}>Get started</Link>
-                </Button>
+                <Link
+                    href={'/sign-in'}
+                    className="flex items-center hover:underline underline-offset-4"
+                >
+                    Get started
+                    <ArrowRight className="w-4 h-4 ml-1" />
+                </Link>
+            </div>
+            <div className="block md:hidden">
+                <MobileNav />
             </div>
         </header>
     )
@@ -38,7 +51,7 @@ function Header() {
 function Footer() {
     return (
         <footer className="px-3 pt-10 border-t md:px-20 scroll-smooth">
-            <div className="grid grid-cols-3 px-5">
+            <div className="grid grid-cols-2 px-5">
                 <div className="flex flex-col gap-2 text-sm">
                     <p className="font-semibold ">Links</p>
                     <Link
@@ -79,15 +92,6 @@ function Footer() {
                         href="/tos"
                     >
                         Terms of service
-                    </Link>
-                </div>
-                <div className="flex flex-col gap-2 text-sm">
-                    <p className="font-semibold ">Sign</p>
-                    <Link
-                        className="hover:underline underline-offset-4 w-max"
-                        href="/sign-in"
-                    >
-                        Log in to your account
                     </Link>
                 </div>
             </div>

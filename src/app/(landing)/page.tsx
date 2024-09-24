@@ -7,41 +7,43 @@ import FormSubmitFile from './form-submit-file'
 
 export default function Home() {
     return (
-        <main className="flex-1 scroll-smooth">
-            <div className="px-4 pt-16 pb-20 text-left sm:px-8 md:px-16 lg:px-32 xl:px-64 md:pt-32 text-background bg-accent-foreground">
-                <h1 className="font-serif text-5xl md:text-6xl">
-                    Translate your resume to any language
-                </h1>
-                <h2 className="w-full text-lg leading-relaxed md:w-4/5 mt-7 md:text-xl">
-                    Globalize Your Resume with Precision. <br />
-                    Ensure it's understood worldwide with precise AI-driven
-                    translations.
-                </h2>
-                <div className="flex flex-col gap-2 md:flex-row mt-7">
-                    <FormSubmitFile />
-                    <Button
-                        asChild
-                        className="text-base"
-                        size={'lg'}
-                        variant={'ghost'}
-                    >
-                        <Link href={'sign-in'}>
-                            Sign in to your account
-                            <ArrowRight className="w-5 h-5 ml-2" />
-                        </Link>
-                    </Button>
+        <div>
+            <main className="flex-1 scroll-smooth">
+                <div className="px-4 pt-16 pb-20 text-left sm:px-8 md:px-16 lg:px-32 xl:px-64 md:pt-32 text-background bg-accent-foreground">
+                    <h1 className="font-serif text-5xl leading-[1.15] md:text-6xl">
+                        Translate resumes to any language
+                    </h1>
+                    <h2 className="w-full leading-relaxed text-md md:w-4/5 mt-7 md:text-lg">
+                        Globalize Your Resume with Precision. <br />
+                        Ensure it's understood worldwide with precise AI-driven
+                        translations.
+                    </h2>
+                    <div className="flex flex-col gap-2 md:flex-row mt-7">
+                        <FormSubmitFile />
+                        <Button
+                            asChild
+                            className="text-base"
+                            size={'lg'}
+                            variant={'ghost'}
+                        >
+                            <Link href={'sign-in'}>
+                                Sign in to your account
+                                <ArrowRight className="w-5 h-5 ml-2" />
+                            </Link>
+                        </Button>
+                    </div>
+                    <div className="h-[400px] md:h-[700px] w-full rounded-md bg-background mt-10 md:mt-20"></div>
                 </div>
-                <div className="h-[400px] md:h-[700px] w-full rounded-md bg-background mt-10 md:mt-20"></div>
-            </div>
+            </main>
             <FeaturesSection />
             <GetStartedSection />
-        </main>
+        </div>
     )
 }
 
 function FeaturesSection() {
     return (
-        <section id="features" className="w-full py-16 border-b md:py-32">
+        <section id="features" className="w-full py-16 md:py-32">
             <div className="container px-4 mx-auto">
                 <div className="grid grid-cols-1 gap-8 mb-12 md:grid-cols-3">
                     <div className="flex flex-col items-center text-center">
@@ -96,10 +98,10 @@ function GetStartedSection() {
     return (
         <section
             id="get-started"
-            className="flex flex-col items-center justify-center py-12 my-16 md:py-24 md:my-20 bg-card text-card-foreground"
+            className="flex flex-col items-center justify-center px-6 py-20 mb-20 md:py-52 bg-card"
         >
-            <h2 className="font-serif text-4xl md:text-5xl">Get started</h2>
-            <h3 className="mt-4 text-center md:mt-6">
+            <h2 className="font-serif text-3xl md:text-5xl">Get started</h2>
+            <h3 className="mt-4 font-medium text-center md:mt-6 md:text-lg">
                 Upload a resume and start translating. No credit card required.
             </h3>
             <Button className="mt-6 text-base" size={'lg'} variant={'default'}>

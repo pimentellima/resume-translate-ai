@@ -40,10 +40,10 @@ export default function PricingPage({
     ]
 
     return (
-        <div className="min-h-screen px-4 py-12 bg-gray-50 sm:px-6 lg:px-8">
+        <div className="min-h-screen px-4 pt-12 pb-32 bg-accent sm:px-6 lg:px-8">
             <div className="mx-auto max-w-7xl">
                 <div className="text-center">
-                    <h2 className="font-serif text-3xl font-medium text-gray-900 sm:text-5xl">
+                    <h2 className="font-serif text-4xl font-medium text-gray-900 sm:text-5xl">
                         Pricing
                     </h2>
                     <p className="mt-4 text-xl text-gray-600">
@@ -72,7 +72,7 @@ export default function PricingPage({
                     {plans.map((plan) => (
                         <div
                             key={plan.name}
-                            className="relative bg-white shadow-xl rounded-2xl"
+                            className="relative bg-white shadow-sm rounded-2xl"
                         >
                             <div className="px-6 py-8 sm:p-10 sm:pb-6">
                                 <div>
@@ -83,7 +83,7 @@ export default function PricingPage({
                                         {plan.name}
                                     </h3>
                                 </div>
-                                <div className="flex items-baseline mt-4 text-6xl font-extrabold">
+                                <div className="flex items-baseline mt-4 text-5xl font-extrabold md:text-6xl">
                                     $
                                     {isYearly
                                         ? plan.price.yearly
