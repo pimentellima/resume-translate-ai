@@ -10,15 +10,14 @@ export async function drawResumeLayoutMetro(
     // Create a new PDF document
     const pdfDoc = await PDFDocument.create()
     pdfDoc.registerFontkit(fontkit)
-    console.log(process.cwd() + '/public/fonts/Poppins/Poppins-Medium.ttf')
-    const poppinsLightBytes = await promises.readFile(
+    /* const poppinsLightBytes = await promises.readFile(
         process.cwd() + '/public/fonts/Poppins/Poppins-Light.ttf'
     )
     const poppinsMediumBytes = await promises.readFile(
         process.cwd() + '/public/fonts/Poppins/Poppins-Medium.ttf'
     )
     const poppinsLight = await pdfDoc.embedFont(poppinsLightBytes)
-    const poppinsMedium = await pdfDoc.embedFont(poppinsMediumBytes)
+    const poppinsMedium = await pdfDoc.embedFont(poppinsMediumBytes) */
     let page = pdfDoc.addPage([600, 850])
 
     const secondaryColor = rgb(0, 0, 0)
@@ -45,7 +44,7 @@ export async function drawResumeLayoutMetro(
         x: marginLeft,
         y: yPosition,
         size: fontSizeLg,
-        font: poppinsMedium,
+        // font: poppinsMedium,
         color: primaryColor,
     })
 
@@ -55,7 +54,7 @@ export async function drawResumeLayoutMetro(
             x: marginLeft,
             y: yPosition,
             size: fontSizeMd,
-            font: poppinsMedium,
+            // font: poppinsMedium,
             color: secondaryColor,
         })
     }
@@ -81,7 +80,7 @@ export async function drawResumeLayoutMetro(
             x: marginLeft,
             y: yPosition,
             size: fontSizeSm,
-            font: poppinsLight,
+            // font: poppinsLight,
             color: primaryColor,
         })
     }
@@ -92,7 +91,7 @@ export async function drawResumeLayoutMetro(
             x: marginLeft,
             y: yPosition,
             size: fontSizeMd,
-            font: poppinsMedium,
+            // font: poppinsMedium,
             color: secondaryColor,
         })
         decreaseY(20)
@@ -106,7 +105,7 @@ export async function drawResumeLayoutMetro(
                 x: marginLeft,
                 y: yPosition,
                 size: fontSizeSm,
-                font: poppinsLight,
+                // font: poppinsLight,
                 color: secondaryColor,
             })
             decreaseY(15)
@@ -127,7 +126,7 @@ export async function drawResumeLayoutMetro(
         x: marginLeft,
         y: yPosition,
         size: fontSizeMd,
-        font: poppinsMedium,
+        // font: poppinsMedium,
         color: secondaryColor,
     })
 
@@ -145,7 +144,7 @@ export async function drawResumeLayoutMetro(
                 x: marginLeft,
                 y: yPosition,
                 size: fontSizeSm,
-                font: poppinsMedium,
+                // font: poppinsMedium,
                 color: secondaryColor,
             }
         )
@@ -156,7 +155,7 @@ export async function drawResumeLayoutMetro(
                 x: marginLeft,
                 y: yPosition,
                 size: fontSizeSm,
-                font: poppinsLight,
+                // font: poppinsLight,
                 color: secondaryColor,
             })
         }
@@ -169,7 +168,7 @@ export async function drawResumeLayoutMetro(
                     x: marginLeft + 5,
                     y: yPosition,
                     size: fontSizeSm,
-                    font: poppinsLight,
+                    // font: poppinsLight,
                     color: secondaryColor,
                 })
                 decreaseY(15)
@@ -183,7 +182,7 @@ export async function drawResumeLayoutMetro(
             x: marginLeft,
             y: yPosition,
             size: fontSizeMd,
-            font: poppinsMedium,
+            // font: poppinsMedium,
             color: secondaryColor,
         })
 
@@ -193,7 +192,7 @@ export async function drawResumeLayoutMetro(
                 x: marginLeft,
                 y: yPosition,
                 size: fontSizeSm,
-                font: poppinsMedium,
+                // font: poppinsMedium,
                 color: secondaryColor,
             })
 
@@ -203,7 +202,7 @@ export async function drawResumeLayoutMetro(
                     x: marginLeft,
                     y: yPosition,
                     size: fontSizeSm,
-                    font: poppinsLight,
+                    // font: poppinsLight,
                     color: secondaryColor,
                 })
             }
@@ -220,7 +219,7 @@ export async function drawResumeLayoutMetro(
                         x: marginLeft + 5,
                         y: yPosition,
                         size: fontSizeSm,
-                        font: poppinsLight,
+                        // font: poppinsLight,
                         color: secondaryColor,
                     })
                     decreaseY(15)
@@ -235,7 +234,7 @@ export async function drawResumeLayoutMetro(
             x: marginLeft,
             y: yPosition,
             size: fontSizeMd,
-            font: poppinsMedium,
+            // font: poppinsMedium,
             color: secondaryColor,
         })
         decreaseY(20)
@@ -249,7 +248,7 @@ export async function drawResumeLayoutMetro(
                 x: marginLeft,
                 y: yPosition,
                 size: fontSizeSm,
-                font: poppinsMedium,
+                // font: poppinsMedium,
                 color: secondaryColor,
             }
         )
@@ -260,7 +259,7 @@ export async function drawResumeLayoutMetro(
                 x: marginLeft,
                 y: yPosition,
                 size: fontSizeSm,
-                font: poppinsLight,
+                // font: poppinsLight,
                 color: secondaryColor,
             })
         }
@@ -278,7 +277,7 @@ export async function drawResumeLayoutMetro(
                         x: marginLeft + 5,
                         y: yPosition,
                         size: fontSizeSm,
-                        font: poppinsLight,
+                        // font: poppinsLight,
                         color: secondaryColor,
                     })
                     decreaseY(15)
@@ -293,7 +292,7 @@ export async function drawResumeLayoutMetro(
             x: marginLeft,
             y: yPosition,
             size: fontSizeMd,
-            font: poppinsMedium,
+            // font: poppinsMedium,
             color: secondaryColor,
         })
         decreaseY(20)
@@ -302,7 +301,7 @@ export async function drawResumeLayoutMetro(
                 x: index % 2 === 0 ? marginLeft : marginLeft + 300,
                 y: yPosition,
                 size: fontSizeSm,
-                font: poppinsLight,
+                // font: poppinsLight,
                 color: secondaryColor,
             })
             if (index % 2 !== 0) decreaseY(18)
