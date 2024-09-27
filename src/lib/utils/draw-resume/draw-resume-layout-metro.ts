@@ -1,10 +1,8 @@
-import { PDFDocument, PDFPage, rgb, StandardFonts } from 'pdf-lib'
+import fontkit from '@pdf-lib/fontkit'
+import path from 'path'
+import { PDFDocument, rgb } from 'pdf-lib'
 import { Resume } from '../generate-resume-object'
 import wrapText from '../wrap-text'
-import fontkit from '@pdf-lib/fontkit'
-import { promises, readFile } from 'fs'
-import path from 'path'
-import getConfig from 'next/config'
 
 export async function drawResumeLayoutMetro(
     resume: Resume
@@ -21,24 +19,14 @@ export async function drawResumeLayoutMetro(
             'Poppins-Light.ttf'
         )
     )
-    const poppinsLightBytes = await promises.readFile(
-        path.join(
-            process.cwd(),
-            'public',
-            'fonts',
-            'Poppins',
-            'Poppins-Light.ttf'
-        )
-    )
-    const poppinsMediumBytes = await promises.readFile(
-        path.join(
-            process.cwd(),
-            'public',
-            'fonts',
-            'Poppins',
-            'Poppins-Medium.ttf'
-        )
-    )
+    const poppinsLightBytes = await fetch(
+        'https://resumes-app-fonts.s3.us-east-2.amazonaws.com/Poppins-Light.ttf'
+    ).then((res) => res.arrayBuffer())
+
+    const poppinsMediumBytes = await fetch(
+        'https://resumes-app-fonts.s3.us-east-2.amazonaws.com/Poppins-Medium.ttf'
+    ).then((res) => res.arrayBuffer())
+    
     const poppinsLight = await pdfDoc.embedFont(poppinsLightBytes)
     const poppinsMedium = await pdfDoc.embedFont(poppinsMediumBytes)
     let page = pdfDoc.addPage([600, 850])
