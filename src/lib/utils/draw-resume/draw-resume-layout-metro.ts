@@ -6,25 +6,38 @@ import { promises, readFile } from 'fs'
 import path from 'path'
 import getConfig from 'next/config'
 
-const serverPath = (staticFilePath: string) => {
-    return path.join(
-        getConfig().serverRuntimeConfig.PROJECT_ROOT,
-        staticFilePath
-    )
-}
-
 export async function drawResumeLayoutMetro(
     resume: Resume
 ): Promise<Uint8Array> {
     // Create a new PDF document
     const pdfDoc = await PDFDocument.create()
     pdfDoc.registerFontkit(fontkit)
-    console.log(serverPath('/public/fonts/Poppins/Poppins-Light.ttf'))
+    console.log(
+        path.join(
+            process.cwd(),
+            'public',
+            'fonts',
+            'poppins',
+            'Poppins-Light.ttf'
+        )
+    )
     const poppinsLightBytes = await promises.readFile(
-        serverPath('/public/fonts/Poppins/Poppins-Light.ttf')
+        path.join(
+            process.cwd(),
+            'public',
+            'fonts',
+            'Poppins',
+            'Poppins-Light.ttf'
+        )
     )
     const poppinsMediumBytes = await promises.readFile(
-        serverPath('/public/fonts/Poppins/Poppins-Medium.ttf')
+        path.join(
+            process.cwd(),
+            'public',
+            'fonts',
+            'Poppins',
+            'Poppins-Medium.ttf'
+        )
     )
     const poppinsLight = await pdfDoc.embedFont(poppinsLightBytes)
     const poppinsMedium = await pdfDoc.embedFont(poppinsMediumBytes)
