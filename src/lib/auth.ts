@@ -1,5 +1,5 @@
 import { db } from '@/drizzle/index'
-import { users } from '@/drizzle/schema'
+import { accounts, authenticators, users } from '@/drizzle/schema'
 import { eq } from 'drizzle-orm'
 import {
     GetServerSidePropsContext,
@@ -9,14 +9,23 @@ import {
 import { AuthOptions } from 'next-auth'
 import { getServerSession } from 'next-auth/next'
 import GoogleProvider from 'next-auth/providers/google'
+import EmailProvider from 'next-auth/providers/email'
 import GithubProvider from 'next-auth/providers/github'
 import { ACCESS_TOKEN_TTL } from '../constants'
 import { obtainAccessToken, refreshAccessToken } from '../services/tokens'
+import { DrizzleAdapter } from '@auth/drizzle-adapter'
+import { sendVerificationRequest } from './send-verification-request'
 
 export const authOptions = {
+    adapter: DrizzleAdapter(db, {
+        accountsTable: accounts,
+        usersTable: users,
+        authenticatorsTable: authenticators,
+    }),
     secret: process.env.NEXTAUTH_SECRET,
     pages: {
         signIn: '/sign-in',
+        verifyRequest: '/sign-in/verify',
     },
     session: {
         strategy: 'jwt',
@@ -68,10 +77,24 @@ export const authOptions = {
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID!,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+            allowDangerousEmailAccountLinking: true,
         }),
         GithubProvider({
             clientId: process.env.GITHUB_CLIENT_ID!,
             clientSecret: process.env.GITHUB_CLIENT_SECRET!,
+            allowDangerousEmailAccountLinking: true,
+        }),
+        EmailProvider({
+            server: {
+                host: process.env.EMAIL_SERVER_HOST,
+                port: process.env.EMAIL_SERVER_PORT,
+                auth: {
+                    user: process.env.EMAIL_SERVER_USER,
+                    pass: process.env.EMAIL_SERVER_PASSWORD,
+                },
+            },
+            from: process.env.EMAIL_FROM,
+            sendVerificationRequest
         }),
     ],
 } satisfies AuthOptions
