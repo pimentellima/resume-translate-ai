@@ -22,7 +22,8 @@ export default function PricingPage({
             features: [
                 'Export to PDF',
                 'Translate to multiple languages',
-                'Translate up to 1 resume per month',
+                'Upload up to 1 resume per month',
+                'Generate up to 3 translations per resume',
             ],
         },
         {
@@ -34,7 +35,8 @@ export default function PricingPage({
             features: [
                 'Export to PDF',
                 'Translate to multiple languages',
-                'Unlimited AI translations',
+                'Unlimited resume uploads',
+                'Unlimited translations per resume'
             ],
         },
     ]
@@ -116,6 +118,7 @@ export default function PricingPage({
                                             </p>
                                         </li>
                                     ))}
+                                    
                                 </ul>
                                 <div className="mt-8">
                                     {plan.name === 'Free' ? (

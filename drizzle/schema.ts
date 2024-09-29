@@ -1,4 +1,3 @@
-import { stripe } from '@/lib/stripe'
 import { relations, sql } from 'drizzle-orm'
 import {
     boolean,
@@ -9,7 +8,6 @@ import {
     text,
     timestamp,
 } from 'drizzle-orm/pg-core'
-import type { AdapterAccount } from 'next-auth/adapters'
 
 export const languageEnum = pgEnum('languages', [
     'enUS',
@@ -130,6 +128,7 @@ export const resumes = pgTable('resumes', {
     userId: text('userId').references(() => users.id, { onDelete: 'cascade' }),
     key: text('key').notNull(),
     layout: layoutEnum('layout').notNull().default('metro'),
+    translationsCount: integer('translationsCount').notNull().default(0),
     name: text('name').notNull().default(''),
     resumeJson: text('resumeJson').notNull().default(''),
     language: languageEnum('language'),

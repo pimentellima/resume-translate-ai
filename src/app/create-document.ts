@@ -1,6 +1,6 @@
 'use server'
 import { db } from '@/drizzle/index'
-import { generations, languageEnum, resumes, users } from '@/drizzle/schema'
+import { generations, languageEnum, resumes } from '@/drizzle/schema'
 import { auth } from '@/lib/auth'
 import s3 from '@/lib/aws-s3'
 import generateResumePdf from '@/lib/utils/draw-resume/generate-resume-pdf'
@@ -9,8 +9,6 @@ import { generateResumeObject } from '@/lib/utils/generate-resume-object'
 import { getGenerationsByUserInMonth } from '@/services/generations'
 import { getUserSubscription } from '@/services/stripe'
 import { getUserById } from '@/services/user'
-import { endOfMonth, startOfMonth } from 'date-fns'
-import { eq } from 'drizzle-orm'
 import { redirect } from 'next/navigation'
 import z from 'zod'
 
@@ -66,19 +64,16 @@ export default async function createDocument(
         return redirect('/sign-in?redirect=resumes&resumeId=' + resumeId)
     }
     try {
-        const userGenerations = await getGenerationsByUserInMonth(
-            session.user.id
-        )
+        const user = await getUserById(session.user.id)
+        const userGenerations = await getGenerationsByUserInMonth(user.id)
         if (userGenerations.length >= 1) {
-            const user = await getUserById(session.user.id)
-            if (!user?.stripeCustomerId)
-                return 'You have reached the limit of 1 resume per month of the Free Plan'
-
-            const subscription = await getUserSubscription(session.user.id)
-            if (!subscription) return 'Subscription not found'
-            if (subscription.status !== 'active') {
-                return 'Your subscription is not active'
-            }
+            const subscription = await getUserSubscription(user.id)
+            if (
+                !user?.stripeCustomerId ||
+                !subscription ||
+                subscription.status !== 'active'
+            )
+                return 'You have reached the limit of 1 resume per month'
         }
 
         const language = languageValidation.data
@@ -106,13 +101,11 @@ export default async function createDocument(
                 file.name.replace('.pdf', '') + '-' + (language || '') + '.pdf',
             userId: session?.user.id,
             language,
-            expiresAt: session?.user.id
-                ? undefined
-                : new Date(Date.now() + 24 * 60 * 60 * 1000),
+            expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
         })
 
         await db.insert(generations).values({
-            userId: session.user.id,
+            userId: user.id,
             resumeId,
         })
     } catch (e) {
