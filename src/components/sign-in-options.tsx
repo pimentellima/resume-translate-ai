@@ -25,9 +25,10 @@ export default function SignInOptions() {
             searchParams.get('resumeId')
 
     const handleSubmitEmail = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
         await signIn('email', {
             email,
-            callbackUrl: process.env.NEXT_PUBLIC_URL + '/resumes',
+            callbackUrl,
         })
     }
 
