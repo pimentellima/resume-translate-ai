@@ -10,15 +10,6 @@ export async function drawResumeLayoutMetro(
     // Create a new PDF document
     const pdfDoc = await PDFDocument.create()
     pdfDoc.registerFontkit(fontkit)
-    console.log(
-        path.join(
-            process.cwd(),
-            'public',
-            'fonts',
-            'poppins',
-            'Poppins-Light.ttf'
-        )
-    )
     const poppinsLightBytes = await fetch(
         'https://resumes-app-fonts.s3.us-east-2.amazonaws.com/Poppins-Light.ttf'
     ).then((res) => res.arrayBuffer())
