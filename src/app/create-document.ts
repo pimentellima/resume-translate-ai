@@ -3,11 +3,11 @@ import { db } from '@/drizzle/index'
 import { generations, languageEnum, resumes } from '@/drizzle/schema'
 import { auth } from '@/lib/auth'
 import s3 from '@/lib/aws-s3'
+import { stripe } from '@/lib/stripe'
 import generateResumePdf from '@/lib/utils/draw-resume/generate-resume-pdf'
 import { extractTextFromPdf } from '@/lib/utils/extract-text-from-pdf'
 import { generateResumeObject } from '@/lib/utils/generate-resume-object'
 import { getGenerationsByUserInMonth } from '@/services/generations'
-import { getUserSubscription } from '@/services/stripe'
 import { getUserById } from '@/services/user'
 import { redirect } from 'next/navigation'
 import z from 'zod'
@@ -67,7 +67,9 @@ export default async function createDocument(
         const user = await getUserById(session.user.id)
         const userGenerations = await getGenerationsByUserInMonth(user.id)
         if (userGenerations.length >= 1) {
-            const subscription = await getUserSubscription(user.id)
+            const subscription = await stripe.subscriptions.retrieve(
+                user.stripeSubscriptionId!
+            )
             if (
                 !user?.stripeCustomerId ||
                 !subscription ||

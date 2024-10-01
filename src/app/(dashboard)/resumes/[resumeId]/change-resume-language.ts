@@ -4,16 +4,15 @@ import { db } from '@/drizzle/index'
 import { resumes } from '@/drizzle/schema'
 import { auth } from '@/lib/auth'
 import s3 from '@/lib/aws-s3'
+import { stripe } from '@/lib/stripe'
 import generateResumePdf from '@/lib/utils/draw-resume/generate-resume-pdf'
 import { extractTextFromPdf } from '@/lib/utils/extract-text-from-pdf'
 import {
-    generateResumeObject,
-    Resume,
+    generateResumeObject
 } from '@/lib/utils/generate-resume-object'
 import { getFileFromS3 } from '@/services/s3'
-import { getUserSubscription } from '@/services/stripe'
 import { getUserById } from '@/services/user'
-import { eq, InferInsertModel, InferSelectModel } from 'drizzle-orm'
+import { eq, InferInsertModel } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 
 export async function changeResumeLanguage(
@@ -30,7 +29,9 @@ export async function changeResumeLanguage(
         if (!user) return 'User not found'
         if (!resume) return 'Document not found'
         if (resume.translationsCount >= 3) {
-            const subscription = await getUserSubscription(user.id)
+            const subscription = await stripe.subscriptions.retrieve(
+                user.stripeSubscriptionId!
+            )
             if (
                 !user?.stripeCustomerId ||
                 !subscription ||

@@ -3,7 +3,8 @@ import Link from 'next/link'
 import DropdownMenuAccount from './resumes/dropdown-menu-account'
 import { auth } from '@/lib/auth'
 import { SparklesIcon, StarsIcon, WandSparkles } from 'lucide-react'
-import { getUserSubscription } from '@/services/stripe'
+import { getUserById } from '@/services/user'
+import { stripe } from '@/lib/stripe'
 
 export default async function Layout({
     children,
@@ -22,8 +23,9 @@ export default async function Layout({
 
 async function Header() {
     const session = await auth()
-    const userSubscription = session?.user
-        ? await getUserSubscription(session.user.id)
+    const user = session?.user.id ? await getUserById(session.user.id) : null
+    const subscription = user?.stripeSubscriptionId
+        ? await stripe.subscriptions.retrieve(user.stripeSubscriptionId)
         : null
 
     return (
@@ -37,7 +39,7 @@ async function Header() {
             )}
 
             <div className="flex">
-                {!userSubscription && (
+                {!subscription && (
                     <Button className="text-base" variant="link" asChild>
                         <Link href={'/pricing'} className="flex items-center">
                             <SparklesIcon className="w-5 h-5 mr-2 text-yellow-400 fill-yellow-400" />{' '}

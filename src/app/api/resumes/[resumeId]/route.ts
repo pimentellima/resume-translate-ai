@@ -1,11 +1,11 @@
-import { NextResponse } from 'next/server'
 import { db } from '@/drizzle/index'
 import { generations, resumes } from '@/drizzle/schema'
-import { eq } from 'drizzle-orm'
 import { auth } from '@/lib/auth'
+import { stripe } from '@/lib/stripe'
 import { getGenerationsByUserInMonth } from '@/services/generations'
 import { getUserById } from '@/services/user'
-import { getUserSubscription } from '@/services/stripe'
+import { eq } from 'drizzle-orm'
+import { NextResponse } from 'next/server'
 
 export async function GET(
     req: Request,
@@ -36,7 +36,9 @@ export async function GET(
                 )
             }
 
-            const subscription = await getUserSubscription(session.user.id)
+            const subscription = await stripe.subscriptions.retrieve(
+                user.stripeSubscriptionId!
+            )
             if (!subscription) {
                 await db.delete(resumes).where(eq(resumes.id, params.resumeId))
                 return NextResponse.redirect(
