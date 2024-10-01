@@ -4,6 +4,8 @@ import { ArrowRight, Clock, FileText } from 'lucide-react'
 import Link from 'next/link'
 import LanguagesInfiniteScroll from './languages-infinite-scroll'
 import FormSubmitFile from './form-submit-file'
+import { Suspense } from 'react'
+import DemoVideo from './demo-video'
 
 export default function Home() {
     return (
@@ -32,7 +34,13 @@ export default function Home() {
                             </Link>
                         </Button>
                     </div>
-                    <div className="h-[400px] md:h-[700px] w-full rounded-md bg-background mt-10 md:mt-20"></div>
+                    <Suspense
+                        fallback={
+                            <div className="h-[400px] md:h-[700px] w-full rounded-md bg-background mt-10 md:mt-20" />
+                        }
+                    >
+                        <DemoVideo />
+                    </Suspense>
                 </div>
             </main>
             <FeaturesSection />
