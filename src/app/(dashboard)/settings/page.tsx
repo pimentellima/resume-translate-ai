@@ -9,6 +9,7 @@ import { redirect } from 'next/navigation'
 import Stripe from 'stripe'
 import { format } from 'date-fns'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import DialogDeleteDocuments from './dialog-delete-documents'
 
 export default async function SettingsPage({
     searchParams,
@@ -111,12 +112,7 @@ export default async function SettingsPage({
                         <CardTitle className="text-lg">Danger zone</CardTitle>
                     </CardHeader>
                     <CardContent className="flex flex-col gap-2">
-                        <Button
-                            className="w-full md:w-max"
-                            variant={'destructive'}
-                        >
-                            Delete all documents
-                        </Button>
+                        <DialogDeleteDocuments/>
                         <Button
                             className="w-full md:w-max"
                             variant={'destructive'}

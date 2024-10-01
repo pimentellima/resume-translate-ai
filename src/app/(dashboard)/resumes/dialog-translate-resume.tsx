@@ -128,7 +128,7 @@ export function DialogTranslateResume() {
                             <ProgressBar progress={progress} />
                         </div>
                         <div className="flex justify-end gap-1 mt-3">
-                            <ButtonCancel closeModal={() => setOpen(false)} />
+                            <ButtonCancel disabled={isSubmitting} closeModal={() => setOpen(false)} />
                             <ButtonSubmit disabled={isSubmitting} />
                         </div>
                     </div>
@@ -161,9 +161,20 @@ function ButtonSubmit({ disabled }: { disabled?: boolean }) {
     )
 }
 
-function ButtonCancel({ closeModal }: { closeModal: () => void }) {
+function ButtonCancel({
+    closeModal,
+    disabled,
+}: {
+    disabled:boolean
+    closeModal: () => void
+}) {
     return (
-        <Button type="button" onClick={closeModal} variant={'destructive'}>
+        <Button
+            disabled={disabled}
+            type="button"
+            onClick={closeModal}
+            variant={'destructive'}
+        >
             Cancel
         </Button>
     )
