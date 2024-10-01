@@ -123,10 +123,10 @@ export default function PrivacyPolicyPage() {
                     If you have any questions or concerns regarding this Privacy
                     Policy, please contact us at{" "}
                     <Link
-                        href={'mailto:matheuspimentel910@gmail.com'}
+                        href={'mailto:resumetranslatorapp@gmail.com'}
                         className="hover:underline underline-offset-4"
                     >
-                        matheuspimentel910@gmail.com
+                        resumetranslatorapp@gmail.com
                     </Link>
                 </p>
             </div>
