@@ -56,6 +56,7 @@ export default function SignInOptions() {
                     onChange={(e) => setEmail(e.target.value)}
                     value={email}
                     type="email"
+                    autoComplete='email'
                     className="bg-white"
                     placeholder="pottsfield.pumpkin@unknownwoods.com"
                 />

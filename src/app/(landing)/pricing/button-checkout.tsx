@@ -1,10 +1,10 @@
 'use client'
 
-import { createCheckoutSession } from '@/app/actions/create-checkout-session'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/components/ui/use-toast'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
+import { buyPlan } from '@/app/actions/buy-plan'
 
 export default function ButtonCheckout({
     plan,
@@ -21,10 +21,10 @@ export default function ButtonCheckout({
                 if (!session?.data?.user) {
                     return router.push('/sign-in?redirect=pricing')
                 }
-                const error = await createCheckoutSession(plan)
+                const error = await buyPlan(plan)
                 if (error) {
                     toast({
-                        title: 'Failed to create checkout session',
+                        title: error,
                         variant: 'destructive',
                     })
                     return

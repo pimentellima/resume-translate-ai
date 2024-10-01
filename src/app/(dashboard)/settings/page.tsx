@@ -3,17 +3,24 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { auth } from '@/lib/auth'
 import { stripe } from '@/lib/stripe'
 import { getUserById } from '@/services/user'
-import { ExternalLink, SparklesIcon } from 'lucide-react'
+import { ExternalLink, RocketIcon, SparklesIcon } from 'lucide-react'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import Stripe from 'stripe'
 import { format } from 'date-fns'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 
-export default async function SettingsPage() {
+export default async function SettingsPage({
+    searchParams,
+}: {
+    searchParams: { [key: string]: string }
+}) {
     const session = await auth()
     if (!session?.user) {
         redirect('/sign-in')
     }
+    const subscriptionUpdatedMEssage =
+        searchParams.message === 'subscription-updated'
     const user = await getUserById(session.user.id)
 
     const subscription = user.stripeSubscriptionId
@@ -30,6 +37,7 @@ export default async function SettingsPage() {
         <div className="grid grid-cols-1 md:grid-cols-[1fr,2fr] px-4 sm:px-8 md:px-16 lg:px-32 xl:px-64 py-10">
             <h1 className="mb-6 font-serif text-2xl md:text-3xl">Settings</h1>
             <div className="flex flex-col gap-6">
+                {subscriptionUpdatedMEssage && <AlertSubscriptionUpdated />}
                 <Card>
                     <CardHeader>
                         <CardTitle className="text-lg font-normal">
@@ -39,7 +47,7 @@ export default async function SettingsPage() {
                             </span>
                             {subscription?.status !== 'canceled' &&
                             subscription?.cancel_at ? (
-                                <span className='ml-1'>{`(Cancels at ${format(
+                                <span className="ml-1">{`(Cancels at ${format(
                                     new Date(subscription.cancel_at * 1000),
                                     'dd MMM yyyy'
                                 )})`}</span>
@@ -60,14 +68,14 @@ export default async function SettingsPage() {
                                 >
                                     <Link
                                         target="_blank"
-                                        className='flex items-center'
+                                        className="flex items-center"
                                         href={
                                             process.env
                                                 .STRIPE_CLIENT_PORTAL_URL!
                                         }
                                     >
                                         Billing
-                                        <ExternalLink className='h-4 ml-1'/>
+                                        <ExternalLink className="h-4 ml-1" />
                                     </Link>
                                 </Button>
                                 {subscription.status === 'canceled' && (
@@ -82,7 +90,10 @@ export default async function SettingsPage() {
                                     You can translate one resume per month with
                                     the free plan.
                                 </p>
-                                <Button className="w-full mt-2 md:w-max" asChild>
+                                <Button
+                                    className="w-full mt-2 md:w-max"
+                                    asChild
+                                >
                                     <Link
                                         href={'/pricing'}
                                         className="flex items-center"
@@ -100,15 +111,33 @@ export default async function SettingsPage() {
                         <CardTitle className="text-lg">Danger zone</CardTitle>
                     </CardHeader>
                     <CardContent className="flex flex-col gap-2">
-                        <Button className="w-full md:w-max" variant={'destructive'}>
+                        <Button
+                            className="w-full md:w-max"
+                            variant={'destructive'}
+                        >
                             Delete all documents
                         </Button>
-                        <Button className="w-full md:w-max" variant={'destructive'}>
+                        <Button
+                            className="w-full md:w-max"
+                            variant={'destructive'}
+                        >
                             Delete account
                         </Button>
                     </CardContent>
                 </Card>
             </div>
         </div>
+    )
+}
+
+function AlertSubscriptionUpdated() {
+    return (
+        <Alert>
+            <RocketIcon className="h-4 w-4" />
+            <AlertTitle>Subscription updated</AlertTitle>
+            <AlertDescription>
+                Your subscription has been updated to a yearly plan.
+            </AlertDescription>
+        </Alert>
     )
 }
