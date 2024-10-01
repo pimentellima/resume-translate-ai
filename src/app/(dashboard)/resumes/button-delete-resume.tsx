@@ -1,10 +1,13 @@
 'use client'
-import { Button } from '@/components/ui/button'
+import { Button, ButtonProps } from '@/components/ui/button'
 import deleteResume from './delete-resume'
 import { Trash2 } from 'lucide-react'
 import { useToast } from '@/components/ui/use-toast'
 
-export default function ButtonDeleteResume({ resumeId }: { resumeId: string }) {
+export default function ButtonDeleteResume({
+    resumeId,
+    ...props
+}: { resumeId: string } & ButtonProps) {
     const { toast } = useToast()
     return (
         <Button
@@ -21,6 +24,7 @@ export default function ButtonDeleteResume({ resumeId }: { resumeId: string }) {
                     })
                 }
             }}
+            {...props}
         >
             <Trash2 className="w-4 h-4" />
         </Button>
