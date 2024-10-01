@@ -56,49 +56,43 @@ function Header() {
 function Footer() {
     return (
         <footer className="px-3 pt-10 border-t md:px-20 scroll-smooth">
-            <div className="grid grid-cols-2 px-5">
-                <div className="flex flex-col gap-2 text-sm">
-                    <p className="font-semibold ">Links</p>
-                    <Link
-                        className="hover:underline underline-offset-4 w-max"
-                        href="/"
-                    >
-                        Home
-                    </Link>
-                    <Link
-                        className="hover:underline underline-offset-4 w-max"
-                        href="#get-started"
-                    >
-                        Get started
-                    </Link>
-                    <Link
-                        className="hover:underline underline-offset-4 w-max"
-                        href="#features"
-                    >
-                        Features
-                    </Link>
-                    <Link
-                        className="hover:underline underline-offset-4 w-max"
-                        href="/pricing"
-                    >
-                        Pricing
-                    </Link>
-                </div>
-                <div className="flex flex-col gap-2 text-sm">
-                    <p className="font-semibold ">Legal</p>
-                    <Link
-                        className="hover:underline underline-offset-4 w-max"
-                        href="/privacy-policy"
-                    >
-                        Privacy policy
-                    </Link>
-                    <Link
-                        className="hover:underline underline-offset-4 w-max"
-                        href="/tos"
-                    >
-                        Terms of service
-                    </Link>
-                </div>
+            <div className="grid grid-cols-3 grid-rows-2 text-sm gap-y-1">
+                <Link
+                    className="hover:underline underline-offset-4 w-max"
+                    href="/"
+                >
+                    Home
+                </Link>
+                <Link
+                    className="hover:underline underline-offset-4 w-max"
+                    href="#get-started"
+                >
+                    Get started
+                </Link>
+                <Link
+                    className="hover:underline underline-offset-4 w-max"
+                    href="#features"
+                >
+                    Features
+                </Link>
+                <Link
+                    className="hover:underline underline-offset-4 w-max"
+                    href="/pricing"
+                >
+                    Pricing
+                </Link>
+                <Link
+                    className="hover:underline underline-offset-4 w-max"
+                    href="/sign-in"
+                >
+                    Sign in
+                </Link>
+                <Link
+                    className="hover:underline underline-offset-4 w-max"
+                    href="/privacy-policy"
+                >
+                    Privacy policy
+                </Link>
             </div>
         </footer>
     )
