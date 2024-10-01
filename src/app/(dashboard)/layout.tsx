@@ -5,12 +5,17 @@ import { auth } from '@/lib/auth'
 import { SparklesIcon, StarsIcon, WandSparkles } from 'lucide-react'
 import { getUserById } from '@/services/user'
 import { stripe } from '@/lib/stripe'
+import { redirect } from 'next/navigation'
 
 export default async function Layout({
     children,
 }: Readonly<{
     children: React.ReactNode
 }>) {
+    const session = await auth()
+    if (!session?.user) {
+        redirect('/sign-in')
+    }
     return (
         <div className="flex flex-col min-h-screen">
             <Header />
