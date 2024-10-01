@@ -85,7 +85,7 @@ export default function PricingPage({
                                         {plan.name}
                                     </h3>
                                 </div>
-                                <div className="flex items-baseline mt-4 text-5xl font-extrabold md:text-6xl">
+                                <div className="flex items-baseline mt-4 text-5xl font-bold md:text-6xl">
                                     $
                                     {isYearly
                                         ? plan.price.yearly
