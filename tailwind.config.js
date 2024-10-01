@@ -18,7 +18,7 @@ module.exports = {
         },
         extend: {
             fontFamily: {
-                serif: ['Georgia', 'sans serif'],
+                serif: ['Libre Caslon Text', 'sans serif'],
             },
             colors: {
                 border: 'hsl(var(--border))',

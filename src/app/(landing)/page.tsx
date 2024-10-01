@@ -15,7 +15,7 @@ export default function Home() {
                     <h1 className="font-serif text-5xl leading-[1.15] md:text-6xl">
                         Translate resumes to any language
                     </h1>
-                    <h2 className="w-full leading-relaxed text-md md:w-4/5 mt-7 md:text-lg">
+                    <h2 className="w-full leading-relaxed text-md md:w-4/5 mt-7 md:text-xl">
                         Globalize Your Resume with Precision. <br />
                         Ensure it's understood worldwide with precise AI-driven
                         translations.

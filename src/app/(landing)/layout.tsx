@@ -29,7 +29,7 @@ function Header() {
                     width={35}
                     height={35}
                 />
-                <span className="font-sans">Resume Translate</span>
+                <span className="font-serif font-semibold tracking-tighter">Resume Translate</span>
             </Link>
             <div className="z-50 hidden gap-7 md:flex">
                 <Link
