@@ -10,6 +10,7 @@ import Stripe from 'stripe'
 import { format } from 'date-fns'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import DialogDeleteDocuments from './dialog-delete-documents'
+import DialogDeleteAccount from './dialog-delete-account'
 
 export default async function SettingsPage({
     searchParams,
@@ -112,13 +113,8 @@ export default async function SettingsPage({
                         <CardTitle className="text-lg">Danger zone</CardTitle>
                     </CardHeader>
                     <CardContent className="flex flex-col gap-2">
-                        <DialogDeleteDocuments/>
-                        <Button
-                            className="w-full md:w-max"
-                            variant={'destructive'}
-                        >
-                            Delete account
-                        </Button>
+                        <DialogDeleteDocuments />
+                        <DialogDeleteAccount />
                     </CardContent>
                 </Card>
             </div>
